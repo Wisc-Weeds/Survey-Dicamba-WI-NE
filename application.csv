@@ -1,0 +1,62 @@
+State,Role,Question,Answer,n,Perc
+Nebraska,Decision influencer,OwnSpr,No,32,48
+Nebraska,Decision influencer,OwnSpr,Yes,35,52
+Nebraska,Farmer,OwnSpr,No,53,22
+Nebraska,Farmer,OwnSpr,Yes,189,78
+Wisconsin,Decision influencer,OwnSpr,No,18,38
+Wisconsin,Decision influencer,OwnSpr,Yes,29,62
+Wisconsin,Farmer,OwnSpr,No,22,22
+Wisconsin,Farmer,OwnSpr,Yes,76,78
+Nebraska,Decision influencer,UsePRE,No,2,3
+Nebraska,Decision influencer,UsePRE,Not sure,2,3
+Nebraska,Decision influencer,UsePRE,Yes,62,94
+Nebraska,Farmer,UsePRE,No,17,7
+Nebraska,Farmer,UsePRE,Not sure,4,2
+Nebraska,Farmer,UsePRE,Yes,220,91
+Wisconsin,Decision influencer,UsePRE,No,7,15
+Wisconsin,Decision influencer,UsePRE,Not sure,5,10
+Wisconsin,Decision influencer,UsePRE,Yes,36,75
+Wisconsin,Farmer,UsePRE,No,27,27
+Wisconsin,Farmer,UsePRE,Not sure,2,2
+Wisconsin,Farmer,UsePRE,Yes,70,71
+Nebraska,Decision influencer,IncludeGLY,No,3,5
+Nebraska,Decision influencer,IncludeGLY,Yes,54,95
+Nebraska,Farmer,IncludeGLY,No,19,19
+Nebraska,Farmer,IncludeGLY,Not sure,3,3
+Nebraska,Farmer,IncludeGLY,Yes,78,78
+Wisconsin,Decision influencer,IncludeGLY,No,3,13
+Wisconsin,Decision influencer,IncludeGLY,Not sure,1,4
+Wisconsin,Decision influencer,IncludeGLY,Yes,19,83
+Wisconsin,Farmer,IncludeGLY,No,16,44
+Wisconsin,Farmer,IncludeGLY,Yes,20,56
+Nebraska,Decision influencer,IncludePOST,No,13,24
+Nebraska,Decision influencer,IncludePOST,Not sure,1,2
+Nebraska,Decision influencer,IncludePOST,Yes,41,74
+Nebraska,Farmer,IncludePOST,No,39,39
+Nebraska,Farmer,IncludePOST,Not sure,9,9
+Nebraska,Farmer,IncludePOST,Yes,53,52
+Wisconsin,Decision influencer,IncludePOST,No,9,41
+Wisconsin,Decision influencer,IncludePOST,Not sure,2,9
+Wisconsin,Decision influencer,IncludePOST,Yes,11,50
+Wisconsin,Farmer,IncludePOST,No,26,74
+Wisconsin,Farmer,IncludePOST,Yes,9,26
+Nebraska,Decision influencer,IncludeG15,No,8,16
+Nebraska,Decision influencer,IncludeG15,Not sure,3,6
+Nebraska,Decision influencer,IncludeG15,Yes,40,78
+Nebraska,Farmer,IncludeG15,No,33,33
+Nebraska,Farmer,IncludeG15,Not sure,13,13
+Nebraska,Farmer,IncludeG15,Yes,53,54
+Wisconsin,Decision influencer,IncludeG15,No,7,29
+Wisconsin,Decision influencer,IncludeG15,Not sure,2,8
+Wisconsin,Decision influencer,IncludeG15,Yes,15,62
+Wisconsin,Farmer,IncludeG15,No,25,66
+Wisconsin,Farmer,IncludeG15,Not sure,2,5
+Wisconsin,Farmer,IncludeG15,Yes,11,29
+Nebraska,Decision influencer,ImpWC,No,4,7
+Nebraska,Decision influencer,ImpWC,Yes,52,93
+Nebraska,Farmer,ImpWC,No,18,17
+Nebraska,Farmer,ImpWC,Yes,89,83
+Wisconsin,Decision influencer,ImpWC,No,8,25
+Wisconsin,Decision influencer,ImpWC,Yes,24,75
+Wisconsin,Farmer,ImpWC,No,16,34
+Wisconsin,Farmer,ImpWC,Yes,31,66

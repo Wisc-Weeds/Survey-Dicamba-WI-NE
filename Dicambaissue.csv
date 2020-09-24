@@ -1,0 +1,53 @@
+State,Role,Question,Answer,n,Perc
+Nebraska,Decision influencer,DrifRed,No,2,4
+Nebraska,Decision influencer,DrifRed,Yes,55,96
+Nebraska,Farmer,DrifRed,No,12,13
+Nebraska,Farmer,DrifRed,Not sure,4,4
+Nebraska,Farmer,DrifRed,Yes,79,83
+Wisconsin,Decision influencer,DrifRed,No,1,4
+Wisconsin,Decision influencer,DrifRed,Not sure,1,4
+Wisconsin,Decision influencer,DrifRed,Yes,22,92
+Wisconsin,Farmer,DrifRed,No,12,34
+Wisconsin,Farmer,DrifRed,Not sure,2,6
+Wisconsin,Farmer,DrifRed,Yes,21,60
+Nebraska,Decision influencer,Neigh,No,40,73
+Nebraska,Decision influencer,Neigh,Not sure,6,11
+Nebraska,Decision influencer,Neigh,Yes,9,16
+Nebraska,Farmer,Neigh,No,88,85
+Nebraska,Farmer,Neigh,Not sure,10,10
+Nebraska,Farmer,Neigh,Yes,5,5
+Wisconsin,Decision influencer,Neigh,No,23,79
+Wisconsin,Decision influencer,Neigh,Not sure,5,17
+Wisconsin,Decision influencer,Neigh,Yes,1,3
+Wisconsin,Farmer,Neigh,No,43,98
+Wisconsin,Farmer,Neigh,Yes,1,2
+Nebraska,Decision influencer,Own,No,27,53
+Nebraska,Decision influencer,Own,Yes,24,47
+Nebraska,Farmer,Own,No,73,51
+Nebraska,Farmer,Own,Yes,70,49
+Wisconsin,Decision influencer,Own,No,24,77
+Wisconsin,Decision influencer,Own,Yes,7,23
+Wisconsin,Farmer,Own,No,41,82
+Wisconsin,Farmer,Own,Yes,9,18
+Nebraska,Decision influencer,FileComp,No,44,94
+Nebraska,Decision influencer,FileComp,Yes,3,6
+Nebraska,Farmer,FileComp,No,119,97
+Nebraska,Farmer,FileComp,Yes,4,3
+Wisconsin,Decision influencer,FileComp,No,26,100
+Wisconsin,Farmer,FileComp,No,41,100
+Nebraska,Decision influencer,yield,No,32,80
+Nebraska,Decision influencer,yield,Yes,8,20
+Nebraska,Farmer,yield,No,49,57
+Nebraska,Farmer,yield,Yes,37,43
+Wisconsin,Decision influencer,yield,No,18,86
+Wisconsin,Decision influencer,yield,Yes,3,14
+Wisconsin,Farmer,yield,No,22,73
+Wisconsin,Farmer,yield,Yes,8,27
+Nebraska,Decision influencer,KeepXtend,No,6,10
+Nebraska,Decision influencer,KeepXtend,Yes,57,90
+Nebraska,Farmer,KeepXtend,No,33,16
+Nebraska,Farmer,KeepXtend,Yes,171,84
+Wisconsin,Decision influencer,KeepXtend,No,3,8
+Wisconsin,Decision influencer,KeepXtend,Yes,37,92
+Wisconsin,Farmer,KeepXtend,No,10,12
+Wisconsin,Farmer,KeepXtend,Yes,71,88

@@ -1,0 +1,353 @@
+---
+title: "2018 Soybean Production and Dicamba Survey"
+author: "Maxwel Coura Oliveira and Rodrigo Werle"
+date: "11/9/2018"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r include=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+```
+
+
+# Demographics 
+
+```{r include=FALSE}
+WIdata=read.csv("2018SurveyWI.csv")
+str(WIdata)
+```
+
+
+## Question 1
+
+```{r}
+WIdata %>% 
+  filter(!is.na(County)) %>%
+  count(County) 
+```
+
+
+## Question 2
+
+
+```{r}
+WIdata %>% 
+  count(Role) 
+```
+
+## Question 3
+
+Total soybean acres planted/managed in 
+
+###2017
+```{r Question32017}
+WIdata %>% 
+  filter(!is.na(SoyA17)) %>% 
+  group_by(Role) %>% 
+  summarise(n = n(), average = mean(SoyA17), minimum=min(SoyA17), maximum = max(SoyA17), sum=sum(SoyA17))
+```
+### 2018
+```{r Question32018}
+WIdata %>% 
+  filter(!is.na(SoyA18)) %>% 
+  group_by(Role) %>% 
+  summarise(n = n(), average = mean(SoyA18), minimum=min(SoyA18), maximum = max(SoyA18), sum=sum(SoyA18))
+```
+### 2019
+```{r Question32019}
+WIdata %>% 
+  filter(!is.na(SoyA19)) %>% 
+  group_by(Role) %>% 
+  summarise(n = n(), average = mean(SoyA19), minimum=min(SoyA19), maximum = max(SoyA19), sum=sum(SoyA19))
+```
+
+
+## Question 4
+
+. Total Xtend soybean acres planted/managed in
+
+### 2017
+```{r Question42017}
+WIdata %>% 
+  filter(!is.na(XtendA17)) %>% 
+  group_by(Role) %>% 
+  summarise(n = n(), average = mean(XtendA17), minimum=min(XtendA17), maximum = max(XtendA17), sum=sum(XtendA17))
+```
+
+### 2018
+```{r Question42018}
+WIdata %>% 
+  filter(!is.na(XtendA18)) %>% 
+  group_by(Role) %>% 
+  summarise(n = n(), average = mean(XtendA18), minimum=min(XtendA18), maximum = max(XtendA18), sum=sum(XtendA18))
+```
+
+### 2019
+```{r Question42019}
+WIdata %>% 
+  filter(!is.na(XtendA19)) %>% 
+  group_by(Role) %>% 
+  summarise(n = n(), average = mean(XtendA19), minimum=min(XtendA19), maximum = max(XtendA19), sum=sum(XtendA19))
+```
+
+
+## Question 5
+
+Total Xtend soybean acres sprayed with dicamba burndown (preplant or pre-emergence) in
+
+### 2017
+```{r Question52017}
+WIdata %>% 
+  filter(!is.na(DicambaPRE17)) %>% 
+  group_by(Role) %>% 
+  summarise(n = n(), average = mean(DicambaPRE17), minimum=min(DicambaPRE17), maximum = max(DicambaPRE17), sum=sum(DicambaPRE17))
+```
+
+### 2018
+```{r Question52018}
+WIdata %>% 
+  filter(!is.na(DicambaPRE18)) %>% 
+  group_by(Role) %>% 
+  summarise(n = n(), average = mean(DicambaPRE18), minimum=min(DicambaPRE18), maximum = max(DicambaPRE18), sum=sum(DicambaPRE18))
+```
+
+### 2019
+```{r Question52019}
+WIdata %>% 
+  filter(!is.na(DicambaPRE19)) %>% 
+  group_by(Role) %>% 
+  summarise(n = n(), average = mean(DicambaPRE19), minimum=min(DicambaPRE19), maximum = max(DicambaPRE19), sum=sum(DicambaPRE19))
+```
+
+
+
+## Question 6
+
+Total Xtend soybean acres sprayed post-emergence with dicamba burdown in 
+
+### 2017
+```{r Question62017}
+WIdata %>% 
+  filter(!is.na(DicambaPOST17)) %>% 
+  group_by(Role) %>% 
+  summarise(n = n(), average = mean(DicambaPOST17), minimum=min(DicambaPOST17), maximum = max(DicambaPOST17), sum=sum(DicambaPOST17))
+```
+
+### 2018
+```{r Question62018}
+WIdata %>% 
+  filter(!is.na(DicambaPOST18)) %>% 
+  group_by(Role) %>% 
+  summarise(n = n(), average = mean(DicambaPOST18), minimum=min(DicambaPOST18), maximum = max(DicambaPOST18), sum=sum(DicambaPOST18))
+```
+
+### 2019
+```{r Question62019}
+WIdata %>% 
+  filter(!is.na(DicambaPOST19)) %>% 
+  group_by(Role) %>% 
+  summarise(n = n(), average = mean(DicambaPOST19), minimum=min(DicambaPOST19), maximum = max(DicambaPOST19), sum=sum(DicambaPOST19))
+```
+
+
+## Question 7
+
+Do you own a sprayer/spray your herbicide programs?   
+
+```{r Question7}
+WIdata %>% 
+  filter(!is.na(OwnSpr)) %>% 
+  group_by(Role) %>% 
+  count(OwnSpr)
+```
+
+
+## Question 8
+
+At the start of the season, did you use an effective pre-emergence herbicide program with multiple effective sties of action before or at planting?
+
+```{r Question8}
+WIdata %>% 
+  filter(!is.na(UsePRE)) %>% 
+  group_by(Role) %>% 
+  count(UsePRE)
+```
+
+
+```{r Question8followup}
+WIdata %>% 
+  filter(!is.na(UsePRE)) %>% #Need to update heading
+  group_by(Role) %>% 
+  count(UsePRE)
+```
+
+----------------------------------------------------------------------------------------------------------------------------------
+# DICAMBA APPLICATION POST-EMERGENCE IN XTEND SOYBEAN 
+
+## Question 9
+
+Which dicamba formulation did you use in Xtend soybeans
+
+```{r Question9}
+WIdata %>% 
+  filter(!is.na(DicamabaFormulation)) %>% 
+  group_by(Role) %>% 
+  count(DicamabaFormulation) 
+```
+
+
+## Question 11
+
+Did you include a drift reduction agent (DRA) in the tank-mix
+
+```{r Question11}
+WIdata %>% 
+  filter(!is.na(DrifRed)) %>% 
+  group_by(Role) %>% 
+  count(DrifRed) 
+```
+
+
+## Question 12
+
+Did you include glyphosate in the tank-mix
+
+```{r Question12}
+WIdata %>% 
+  filter(!is.na(IncludeGLY)) %>% 
+  group_by(Role) %>% 
+  count(IncludeGLY) 
+```
+
+
+
+## Question 13
+
+Did you include post-emergence herbicides other than glyphosate in the tank-mix
+
+```{r Question13}
+WIdata %>% 
+  filter(!is.na(IncludePOST)) %>% 
+  group_by(Role) %>% 
+  count(IncludePOST) 
+```
+
+
+## Question 14
+
+Did you include soil-residual herbicides (Group 15) in the POST-emergence tank-mix   
+
+```{r Question14}
+WIdata %>% 
+  filter(!is.na(IncludeG15)) %>% 
+  group_by(Role) %>% 
+  count(IncludeG15) 
+```
+
+
+## Question 15
+
+Did dicamba application in your Xtend soybeans injured neighboring soybean fields?
+
+```{r Question15}
+WIdata %>% 
+  filter(!is.na(DicambaInjuryNeigh)) %>% 
+  group_by(Role) %>% 
+  count(DicambaInjuryNeigh) 
+```
+
+
+
+## Question 16 
+
+Has weed management in soybeans significantly improved with the adoption of Xtend soybean
+
+```{r Question16}
+WIdata %>% 
+  filter(!is.na(ImpWeedC)) %>% 
+  group_by(Role) %>% 
+  count(ImpWeedC) 
+```
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+# NON-XTEND SOYBEAN ACRES
+
+## Question 17 
+
+Did you notice dicamba injury in your non-Xtend soybeans?
+
+```{r Question17}
+WIdata %>% 
+  filter(!is.na(DicambaInjuryOwn)) %>% 
+  group_by(Role) %>% 
+  count(DicambaInjuryOwn) 
+```
+
+
+## Question 18 
+
+Did you file an official complaint with the Department of Agriculture? 
+
+```{r Question18}
+WIdata %>% 
+  filter(!is.na(FileComp)) %>% 
+  group_by(Role) %>% 
+  count(FileComp) 
+```
+
+## Question 19 # CHECK THIS ONE
+
+What do you believe was (were) the main cause(s) for dicamba injury on your non-Xtend soybean?
+
+```{r Question19}
+WIdata %>% 
+  unite(CausesInj, CouseDicambaInjury, CouseDicambaInjury1, CouseDicambaInjury2, CouseDicambaInjury3, CouseDicambaInjury4, CouseDicambaInjury5, CouseDicambaInjury6, CouseDicambaInjury7, CouseDicambaInjury8, sep= "", remove =TRUE) %>% 
+  filter(!is.na(CausesInj)) %>% 
+  group_by(Role) %>% 
+  count(CausesInj) 
+```
+
+
+## Question 20 
+
+Do you expect yield reduction in your dicamba injured soybean?
+
+```{r Question20}
+WIdata %>% 
+  filter(!is.na(YieldRedSoyInjury)) %>% 
+  group_by(Role) %>% 
+  count(YieldRedSoyInjury) 
+```
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+## Question 21 
+
+Do you think the technology should be available to producers next growing season?
+
+```{r Question21}
+WIdata %>% 
+  filter(!is.na(KeepXtend)) %>% 
+  group_by(Role) %>% 
+  count(KeepXtend) 
+```
+
+
+## Question 22 
+
+Any thoughts you would like to share regarding Xtend soybean
+
+```{r Question22}
+WIdata %>% 
+  filter(!is.na(Comments)) %>% 
+  group_by(Role) %>% 
+  count(Comments) 
+```

@@ -1,0 +1,1460 @@
+---
+title: "2018 Soybean Production and Dicamba Survey"
+author: "Maxwel Coura Oliveira and Rodrigo Werle"
+date: "11/9/2018"
+output:
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+  geometry:
+  - top=1in
+  - bottom=1in
+  - right=1in
+  - left=1.5in
+  fontsize: 11pt
+  html_document:
+    df_print: paged
+---
+
+
+```{r include=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+library(scales)
+library(ggthemes)
+library(usmap)
+library(ggmap)
+library(ggrepel)
+library(maps)
+library(grid)
+library(mapdata)
+library(maptools)
+library(stringr)
+library(dplyr)
+library(ggsn)
+library(choroplethr)
+```
+
+
+# Demographics 
+
+```{r include=FALSE, warning=FALSE}
+Data=read.csv("2018SurveyWINE.csv")
+str(Data)
+```
+
+
+```{r}
+plot_usmap(include = c("WI", "NE", "IA", "MN")) +
+  labs(title = "Western US States", subtitle = "These are the states in the Pacific Timezone.")
+```
+
+
+```{r}
+states = map_data("state")
+df <- subset(states, region == "nebraska" | region =="wisconsin")
+```
+
+```{r}
+counties <- map_data("county")
+county <- subset(counties, region == "nebraska" | region =="wisconsin")
+county 
+write.csv(county , "county.csv")
+```
+
+```{r}
+base <- ggplot(data = df, mapping = aes(x = long, y = lat, group = group)) + 
+  coord_fixed(1.3) + 
+  geom_polygon(color = "black", fill = "white")
+base + theme_nothing()
+
+```
+
+
+```{r}
+Data<-Data %>% 
+  select(State, subregion) %>% 
+  count(subregion, na.rm = TRUE) %>% 
+  add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>% 
+  mutate(subregion = tolower(subregion))
+
+
+Map <- dplyr::full_join(Data, county , by = "subregion")
+
+```
+
+
+
+
+
+```{r}
+ggplot(data = df, mapping = aes(x = long, y = lat, group = group)) + 
+  geom_polygon(data = Map, aes(group=subregion, fill = n)) +
+  geom_polygon(color = "black", fill = NA)  +  #scale_fill_gradient2(name="Number of respondents", low = "blue", high = "navy") +
+  labs(title="Q1. County", fill="", y="Latitude", x="Longitude", caption="Source: University of Wisconsin-Madison") + scale_fill_distiller(name="Number of respondents", palette="Blues", breaks=c(1,5,10,15,20,25, 30), labels=c(1,5,10,15,20,25, 30)) +
+  north(df, location = 'topright', symbol = 1, anchor = c(x = -86, y = 47)) +
+  scalebar(data=df, dist = 200, dd2km = T, model = 'International', location = "bottomright") + theme_economist_white() +
+      theme(axis.text=element_text(size=20, color="black"), 
+        axis.title=element_text(size=25,face="bold"), legend.box = "horizontal",
+         legend.position=c(0.12, 0.88), legend.text = element_text(size = 18, colour = "black"), legend.key = element_rect(fill=NA), panel.border = element_rect(fill=NA,color="black", size=0.5, linetype="solid"), plot.title = element_text(size=30, color="red", hjust=-0.05) ,
+legend.background = element_rect(fill =NA), legend.key.width = unit(2.2, "line"), legend.title=element_text(size=20, face="bold")) + 
+   annotate("text", x = -100, y =43.5, label = c("Nebraska"), size=10) + 
+     annotate("text", x = -89.2, y =42, label = c("Wisconsin"), size=10) + 
+  ggsave("map.png", units="in", width=15, height=9, dpi=600) 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+## Question 1 - County
+
+
+```{r echo=FALSE, warning=FALSE, include=FALSE, warning=FALSE, message=FALSE}
+a<-Data %>% 
+  filter(Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(Role1, State) %>% 
+  count(County, na.rm = TRUE) 
+
+  
+  kable(a, "latex", longtable = T, booktabs = T) %>%
+  kable_styling(latex_options = "scale_down")
+```
+
+
+## Question 2 - Your Role
+
+
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+b<-Data %>% 
+  filter(Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State) %>% 
+  count(Role1, na.rm = TRUE) %>% 
+  add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn, -na.rm) %>% 
+  mutate_at(4, round, 0)
+
+#names(b) <- c("State", "Role", "Total", "Percentage")
+
+
+kable(b, "latex", caption ="Primary role of survey respondents from Nebraska and Wiscosnin", booktabs = T,
+      col.names = c("State", "Role", "#", "%"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "Respondents" = 2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+
+
+```{r Question2plot, echo=FALSE, fig.cap="Primary role of survey respondents from Nebraska and Wiscosnin", warning=FALSE}
+ggplot(b, aes(x="", y=Perc, fill=Role1)) + geom_col(width=1, color="black") + ylim(0,100) +
+  facet_wrap(~State) + scale_fill_brewer(palette="Blues") + 
+  coord_polar(theta = "y", start = pi / 3) + 
+ geom_text(aes(label = Perc), data=subset(b, Role1=="Farmer"), size=9, hjust=0, vjust=5) + 
+  geom_text(aes(label = Perc), data=subset(b, Role1=="Decision influencer"), size=9, hjust=0, vjust=-5) + 
+  theme_economist_white() +
+      theme(axis.text=element_blank(), strip.text = element_text(size = 25, face="bold", color="black"),
+        axis.title.y = element_text(size=20, face="bold", vjust = 2), axis.title.x = element_blank(), 
+         plot.title = element_text(size=26, color="red", hjust=-0.025),
+  legend.key.width = unit(2.2, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position="bottom", legend.text = element_text(size = 18, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_blank()) + labs(title="Q2. Role", x="% respondents", y="", caption="Source: University of Wisconsin-Madison") +
+  ggsave("Role.png", height=6, width=12, dpi=600)
+```
+
+
+
+\newpage
+
+## Question 3 - Total soybean ha planted/managed in 
+
+
+### 2017
+
+```{r Question32017, echo=FALSE, warning=FALSE}
+c<-Data %>% 
+  filter(!is.na(SoyH17), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(SoyH17, na.rm = TRUE), Total=sum(SoyH17, na.rm = TRUE)) %>% 
+  #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(c, "latex", caption = "Total soybean ha planted/managed in 2017 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+
+
+
+
+### 2018
+
+```{r Question32018, echo=FALSE, warning=FALSE}
+d<-Data %>% 
+  filter(!is.na(SoyH18), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(SoyH18, na.rm = TRUE), Total=sum(SoyH18, na.rm = TRUE)) %>% 
+   #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(d, "latex", caption = "Total soybean ha planted/managed in 2018 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+### 2019
+
+```{r Question32019, echo=FALSE, warning=FALSE}
+e<-Data %>% 
+  filter(!is.na(SoyH19), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(SoyH19), Total=sum(SoyH19)) %>% 
+  #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(e, "latex", caption = "Total expected soybean ha to be planted/managed in 2019 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+\newpage
+
+## Question 4 - Total Xtend soybean ha planted/managed in
+
+
+### 2017
+
+```{r Question42017, echo=FALSE, warning=FALSE}
+f<-Data %>% 
+  filter(!is.na(XtendH17), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), mean= mean(XtendH17), Total=sum(XtendH17)) %>% 
+  #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(f, "latex", caption = "Total Xtend soybean ha planted/managed in 2017 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+### 2018
+
+```{r Question42018, echo=FALSE, warning=FALSE}
+g<-Data %>% 
+  filter(!is.na(XtendH18), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(XtendH18), Total=sum(XtendH18)) %>% 
+   #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(g, "latex", caption = "Total Xtend soybean ha planted/managed in 2018 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+### 2019
+```{r Question42019, echo=FALSE, warning=FALSE}
+h<-Data %>% 
+  filter(!is.na(XtendH19), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(XtendH19), Total=sum(XtendH19)) %>% 
+  #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(h, "latex", caption = "Total expected Xtend soybean ha to be planted/managed in 2019 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+
+\newpage
+
+
+
+```{r ModelXtendHa, echo=FALSE, fig.height=6, fig.width=9, warning=FALSE, fig.cap="Share of the total Xtend soybean ha planted/managed in 2017, 2018, and 2019 according to survey respondents from Nebraska and Wisconsin"}
+td <- Data %>% 
+  mutate(XtR17=XtendH17/SoyH17*100, XtR18=XtendH18/SoyH18*100, XtR19=XtendH19/SoyH19*100) %>% 
+  gather("xsoy", "Perc", 54:56, na.rm=TRUE) %>% 
+   filter(!is.na(xsoy), Role1 %in% c("Decision influencer", "Farmer"))
+  
+  
+
+td$xsoy<-factor(td$xsoy, levels=c("XtR17", "XtR18", "XtR19"), labels=c("2017", "2018", "2019"))
+td$xsoy<-as.factor(td$xsoy)
+
+
+
+ggplot(td, aes(x=xsoy, y=Perc, color=Role1, group=Role1)) + geom_smooth(method=loess, se=TRUE, alpha=0.2, aes(fill=Role1), size=2) + 
+  stat_summary(fun.y = "mean", size=4, geom = "point", aes(fill=Role1, color=Role1)) + 
+  facet_wrap(~State, ncol=2) + ylim(0,100) +
+  theme_economist() +
+  annotate("text", x = 1, y =0, label = c("n=284", "n=137"), size=3) +
+  annotate("text", x = 2, y =0, label = c("n=294", "n=138"), size=3) +
+  annotate("text", x = 3, y =0, label = c("n=246", "n=123"), size=3) +
+        theme(axis.text=element_text(size=22, color="black"), axis.text.y=element_text(size=18, color="black"), strip.text = element_text(size = 25, face="bold", color="black"), axis.title=element_text(size=18, face="bold"), plot.title=element_text(size=26, face="bold", color="red", hjust=-0.19),
+  legend.key.width = unit(2.5, "line"), 
+  legend.position="bottom", legend.text = element_text(size = 18, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_blank()) + labs(title="Q4. Xtend", x="", y="% Xtend soybean ha", caption="Source: University of Wisconsin-Madison")  + scale_color_brewer(palette="Set1") +
+  ggsave("ShareXtend.png", dpi=600)
+```
+
+\newpage
+
+```{r modelxtendha, eval=FALSE, warning=FALSE, include=FALSE}
+zz<-td %>% 
+    group_by(Role1, State) %>% 
+    do({
+      mod = lm(Perc ~ xsoy, data = .)
+      data.frame(Intercept = coef(mod)[1],
+                 Slope = coef(mod)[2])})
+
+
+
+kable(zz, "latex", caption ="Intercept and Slope of the share of the total Xtend soybean ha planted/managed in 2017, 2018, and 2019 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("Role", "State", "Intercept", "Slope"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+
+## Question 5 - Total Xtend soybean ha sprayed with dicamba burndown (preplant or pre-emergence) in
+
+
+### 2017
+```{r Question52017, echo=FALSE}
+i<-Data %>% 
+  filter(!is.na(DicambaPRE17), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(DicambaPRE17), Total=sum(DicambaPRE17)) %>% 
+  #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(i, "latex", caption = "Total Xtend soybean ha sprayed with dicamba burndown (preplant or pre-emergence) in 2017 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+### 2018
+```{r Question52018, echo=FALSE}
+j<-Data %>% 
+  filter(!is.na(DicambaPRE18), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(DicambaPRE18),  Total=sum(DicambaPRE18)) %>% 
+  #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(j, "latex", caption = "Total Xtend soybean ha sprayed with dicamba burndown (preplant or pre-emergence) in 2018 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+### 2019
+```{r Question52019, echo=FALSE}
+k<-Data %>% 
+  filter(!is.na(DicambaPRE19), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(DicambaPRE19), Total=sum(DicambaPRE19)) %>% 
+  #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(k, "latex", caption = "Total expected Xtend soybean ha to be sprayed with dicamba burndown (preplant or pre-emergence) in 2019 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+\newpage
+
+
+
+```{r ModelPREHa, echo=FALSE, fig.cap="Share of the total Xtend soybean ha sprayed with dicamba PRE in 2017", fig.height=6, fig.width=9, warning=FALSE}
+ta <- Data %>% 
+  mutate(PRE17=DicambaPRE17/XtendH17*100, PRE18=DicambaPRE18/XtendH18*100, PRE19=DicambaPRE19/XtendH19*100) %>% 
+  gather("pre", "Perc", 54:56, na.rm=TRUE) %>% 
+   filter(!is.na(pre), Role1 %in% c("Decision influencer", "Farmer"))
+  
+  
+
+ta$pre<-factor(ta$pre, levels=c("PRE17", "PRE18", "PRE19"), labels=c("2017", "2018", "2019"))
+ta$pre<-as.factor(ta$pre)
+
+
+
+ggplot(ta, aes(x=pre, y=Perc, color=Role1, group=Role1)) + geom_smooth(method=loess, se=TRUE, alpha=0.2, aes(fill=Role1), size=2) + 
+  stat_summary(fun.y = "mean", size=4, geom = "point", aes(fill=Role1, color=Role1)) + 
+  facet_wrap(~State, ncol=2) + ylim(0,100) +
+  theme_economist() +
+  annotate("text", x = 1, y =0, label = c("n=276", "n=135"), size=3) +
+  annotate("text", x = 2, y =0, label = c("n=291", "n=136"), size=3) +
+  annotate("text", x = 3, y =0, label = c("n=252", "n=131"), size=3) +
+        theme(axis.text=element_text(size=22, color="black"), axis.text.y=element_text(size=18, color="black"), strip.text = element_text(size = 25, face="bold", color="black"), axis.title=element_text(size=18, face="bold"), 
+  legend.key.width = unit(2.5, "line"),  plot.title=element_text(size=26, face="bold", color="red", hjust=-0.23),
+  legend.position="bottom", legend.text = element_text(size = 18, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_blank()) + 
+  labs(title="Q5. Xtend PRE",x="", y="% dicamba PRE-applied in Xtend soybean ha", caption="Source: University of Wisconsin-Madison")  + scale_color_brewer(palette="Set1") +
+  ggsave("SharePRE.png", dpi=600)
+```
+
+
+```{r modelpreha1, eval=FALSE, warning=FALSE, include=FALSE}
+te<-ta %>% 
+    group_by(Role1, State) %>% 
+    do({
+      mod = lm(Perc ~ pre, data = .)
+      data.frame(Intercept = coef(mod)[1],
+                 Slope = coef(mod)[2])
+    })
+
+
+
+kable(te, "latex", caption ="Intercept and Slope of the share of the total Xtend soybean ha sprayed with dicamba PRE in 2017, 2018, and 2019 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("Role", "State", "Intercept", "Slope"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+\newpage
+
+## Question 6 - Total Xtend soybean ha sprayed post-emergence with dicamba in 
+
+### 2017
+```{r Question62017, echo=FALSE}
+l<-Data %>% 
+  filter(!is.na(DicambaPOST17), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(DicambaPOST17), Total=sum(DicambaPOST17)) %>% 
+  #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(l, "latex", caption = "Total Xtend soybean ha sprayed post-emergence with dicamba burdown in 2017 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+### 2018
+```{r Question62018, echo=FALSE, warning=FALSE}
+m<-Data %>% 
+  filter(!is.na(DicambaPOST18), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(DicambaPOST18), Total=sum(DicambaPOST18)) %>% 
+  #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(m, "latex", caption = "Total Xtend soybean ha sprayed post-emergence with dicamba burdown in 2018 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+### 2019
+```{r Question62019, echo=FALSE, warning=FALSE}
+n<-Data %>% 
+  filter(!is.na(DicambaPOST19), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(DicambaPOST19), Total=sum(DicambaPOST19)) %>% 
+  #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(n, "latex", caption = "Total expected Xtend soybean ha to be sprayed post-emergence with dicamba burdown in 2018 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+\newpage
+
+```{r}
+Data %>% 
+  group_by(State, Role1) %>% 
+  select(DicambaPRE19, DicambaPOST19) %>% 
+  filter(!is.na(DicambaPRE19), !is.na(DicambaPOST19), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  summarise(n = n(), average = mean(DicambaPRE19 + DicambaPOST19), Total=sum(DicambaPRE19 + DicambaPOST19)) %>% 
+  #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+```
+
+
+
+```{r ModelPOSTHa, echo=FALSE, fig.height=6, fig.width=9, fig.cap="Share of the total Xtend soybean ha sprayed with dicamba POST in 2017, 2018, and 2019 according to survey respondents from Nebraska and Wisconsin", warning=FALSE}
+ts <- Data %>% 
+  mutate(POST17=DicambaPOST17/XtendH17*100, POST18=DicambaPOST18/XtendH18*100, POST19=DicambaPOST19/XtendH19*100) %>% 
+  gather("post", "Perc", 54:56, na.rm=TRUE) %>% 
+   filter(!is.na(post), Role1 %in% c("Decision influencer", "Farmer"))
+  
+  
+
+ts$post<-factor(ts$post, levels=c("POST17", "POST18", "POST19"), labels=c("2017", "2018", "2019"))
+ts$post<-as.factor(ts$post)
+
+
+
+ggplot(ts, aes(x=post, y=Perc, color=Role1, group=Role1)) + geom_smooth(method=loess, se=TRUE, alpha=0.2, aes(fill=Role1), size=2) + 
+  stat_summary(fun.y = "mean", size=4, geom = "point", aes(fill=Role1, color=Role1)) + 
+  facet_wrap(~State, ncol=2) + ylim(0,100) +
+  theme_economist() +
+  annotate("text", x = 1, y =0, label = c("n=276", "n=135"), size=3) +
+  annotate("text", x = 2, y =0, label = c("n=291", "n=136"), size=3) +
+  annotate("text", x = 3, y =0, label = c("n=241", "n=124"), size=3) +
+        theme(axis.text=element_text(size=22, color="black"), axis.text.y=element_text(size=18, color="black"), strip.text = element_text(size = 25, face="bold", color="black"), axis.title=element_text(size=18, face="bold"), 
+  legend.key.width = unit(2.5, "line"), plot.title=element_text(size=26, face="bold", color="red", hjust=-0.24),
+  legend.position="bottom", legend.text = element_text(size = 18, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_blank()) + 
+  labs(title="Q6. Xtend POST",x="", y="% dicamba POST-applied in Xtend soybean ha", caption="Source: University of Wisconsin-Madison")  + scale_color_brewer(palette="Set1") +
+  ggsave("SharePOST.png", dpi=600)
+```
+
+
+```{r modelpostha, eval=FALSE, warning=FALSE, include=FALSE}
+ra<-ts %>% 
+    group_by(Role1, State) %>% 
+    do({
+      mod = lm(Perc ~ post, data = .)
+      data.frame(Intercept = coef(mod)[1],
+                 Slope = coef(mod)[2])})
+
+
+kable(ra, "latex", caption ="Intercept and Slope of the share of the total Xtend soybean ha sprayed with dicamba POST in 2017, 2018, and 2019 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("Role", "State", "Intercept", "Slope"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+# work here:
+```{r eval=FALSE}
+Total<- Data %>% 
+  mutate(XtR17=XtendH17/SoyH17*100, XtR18=XtendH18/SoyH18*100, XtR19=XtendH19/SoyH19*100, PRE17=DicambaPRE17/SoyH17*100, PRE18=DicambaPRE18/SoyH18*100, PRE19=DicambaPRE19/SoyH19*100, POST17=DicambaPOST17/SoyH17*100, POST18=DicambaPOST18/SoyH18*100, POST19=DicambaPOST19/SoyH19*100) %>% 
+    select(Role1, State, SoyH17, SoyH18, SoyH19, XtR17, XtR18, XtR19, PRE17, PRE18, PRE19, POST17, POST18, POST19) 
+Total
+#Write CSV in R
+#write.csv(Total, file = "Total1.csv")
+```
+
+
+```{r}
+Total=read_csv("Total.csv")
+
+ggplot(Total, aes(x=Year, y=Perc)) + geom_density(stat="identity") + stat_summary(fun.y = "mean", size=3, geom = "point", aes(fill=Role1, color=Role1)) 
+```
+
+
+
+
+
+
+\newpage
+
+## Question 7 - Do you own a sprayer/spray your herbicide programs
+
+```{r Question7, echo=FALSE, warning=FALSE, message=FALSE}
+o<-Data %>% 
+  filter(!is.na(OwnSpr), Role1 %in% c("Decision influencer", "Farmer"), OwnSpr %in% c("Yes", "No")) %>% 
+  group_by(State, Role1) %>% 
+  count(OwnSpr) %>% 
+  add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn) %>% 
+  mutate_at(5, round, 0)
+
+#Write CSV in R
+#write.csv(o, file = "ownsp.csv")
+
+
+kable(o, "latex", caption = "Own a sprayer/spray your herbicide programs", booktabs = T,
+      col.names = c("State", "Role", "Answer", "#", "%"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "", "Respondents" = 2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = c(1:2), latex_hline = "custom", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+```{r Question7plot, echo=FALSE, fig.cap="Own a sprayer/spray your herbicide programs", warning=FALSE}
+ggplot(o, aes(x=Role1, y=Perc, fill=OwnSpr, label=Perc)) + geom_col(width=0.4, color="black") + 
+  labs(x="", y="% Respondents") + facet_wrap(~State) + scale_fill_brewer(name = "Own a sprayer", palette="Set1") + 
+  #coord_polar(theta = "y", start = pi / 3) + 
+ #geom_text(aes(label = Perc), size = 5) +
+      theme(axis.text=element_text(size=13, color="black"), strip.text = element_text(size = 16, face="bold", color="black"),
+        axis.title=element_text(size=16, face="bold"), 
+        panel.background = element_rect(fill="white", color = "black"), 
+        panel.grid.major = element_line(color = "white"), 
+  panel.grid.minor = element_blank(), legend.key.width = unit(1.8, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position="bottom", legend.text = element_text(size = 14, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_text(size=14, face="bold")) + labs(x="", y="% of total respondents")
+```
+
+
+\newpage
+
+## Question 8 - At the start of the season, did you use an effective pre-emergence herbicide program with multiple effective sites of action before or at planting?
+
+
+```{r Question8, echo=FALSE, message=FALSE, warning=FALSE}
+p<-Data %>% 
+  #unite(UsePREe, UsePRE, Herb, sep= "", remove =TRUE) %>% 
+  filter(!is.na(UsePRE), Role1 %in% c("Decision influencer", "Farmer"), UsePRE %in% c("Yes", "Not sure", "No")) %>% 
+  group_by(State, Role1) %>% 
+  count(UsePRE, na.rm=TRUE) %>% 
+  add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn, -na.rm) %>% 
+  mutate_at(5, round, 0)
+
+#Write CSV in R
+#write.csv(p, file = "effectivepre.csv")
+
+
+
+kable(p, "latex", caption = "Use an effective pre-emergence herbicide program with multiple effective sites of action before or at planting", booktabs = T,
+      col.names = c("State", "Role", "Answer", "#", "%"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "", "Respondents" = 2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = c(1:2), latex_hline = "custom", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+
+
+
+
+```{r Question8plot, echo=FALSE, fig.cap="Use an effective pre-emergence herbicide program with multiple effective sites of action before or at planting", warning=FALSE}
+ggplot(p, aes(x=Role1, y=Perc, fill=UsePRE, label=Perc)) + geom_col(width=0.4, color="black") + 
+  labs(x="", y="% Respondents") + facet_wrap(~State) + scale_fill_brewer(name="Use of effective PRE", palette="Set1") + 
+      theme(axis.text=element_text(size=13, color="black"), strip.text = element_text(size = 16, face="bold", color="black"),
+        axis.title=element_text(size=16, face="bold"), 
+        panel.background = element_rect(fill="white", color = "black"), 
+        panel.grid.major = element_line(color = "white"), 
+  panel.grid.minor = element_blank(), legend.key.width = unit(1.8, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position="bottom", legend.text = element_text(size = 14, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_text(size=14, face="bold")) + labs(x="", y="% of total respondents")
+```
+
+\newpage
+
+
+# DICAMBA APPLICATION POST-EMERGENCE IN XTEND SOYBEAN 
+
+## Question 9 - Which dicamba formulation did you use in Xtend soybeans?
+
+```{r Question9, echo=FALSE, message=FALSE, warning=FALSE}
+r<-Data %>% 
+  filter(!is.na(DicamabaFormulation), DicamabaFormulation %in% c("Engenia", "XtendiMax", "Fexapan")) %>% 
+  group_by(State, Role1, DicamabaFormulation) %>% 
+  summarise(n = n(), Txtend17=sum(XtendH17, na.rm=TRUE), Mxtend17=mean(XtendH17, na.rm=TRUE), Txtend18=sum(XtendH18, na.rm=TRUE), Mxtend18=mean(XtendH18, na.rm=TRUE),            Txtend19=sum(XtendH19, na.rm=TRUE), Mxtend19=mean(XtendH19, na.rm=TRUE)) %>% 
+ add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn) %>% 
+  mutate_at(5:11, round, 0) %>% 
+  select("State", "Role1", "DicamabaFormulation", "n", "Perc", "Txtend17", 'Mxtend17', "Txtend18", "Mxtend18", "Txtend19", "Mxtend19")
+
+
+kable(r, "latex", caption = "Dicamba formulation used in Xtend soybeans according to survey participants from Nebraska and Wisconsin", booktabs = T, 
+      col.names = c("State", "Role", "Formulation", "#", "%", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "Dicamba"=1, "Respondents" = 2, "2017"=2, "2018"=2, "2019"=2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = c(1:3), latex_hline = "custom", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) %>% 
+  landscape()
+```
+
+
+```{r Question9plot, echo=FALSE, fig.cap="Dicamba formulation used in Xtend soybeans according to survey participants from Nebraska and Wisconsin", warning=FALSE}
+ggplot(r, aes(x=Role1, y=Perc, fill=DicamabaFormulation, label=Perc)) + geom_col(width=0.4, color="black") + 
+  labs(x="", y="% Respondents") + facet_wrap(~State) + scale_fill_brewer(name="", palette="Blues") + 
+  theme_economist_white() + 
+      theme(axis.text.y=element_text(size=18, color="black"), axis.text.x=element_text(size=22, color="black"), 
+        axis.title=element_text(size=22, face="bold"), 
+       legend.key.width = unit(1.8, "line"), plot.title = element_text(size=25, color="red", hjust=-0.125),
+  legend.position="bottom", legend.text = element_text(size = 18, colour = "black"), legend.key = element_rect(fill=NA), strip.text.x = element_text(size=25, face="bold"),
+legend.background = element_rect(fill =NA), legend.title=element_blank()) + labs(title="Q9. Formulation", x="", y="% of total respondents", caption="Source: University of Wisconsin-Madison") + ggsave("Herbicide.png", width = 10, height=6, dpi=600)
+```
+
+\newpage
+
+## Question 11 - Did you include a drift reduction agent (DRA) in the tank-mix?
+
+```{r Question11, echo=FALSE, message=FALSE, warning=FALSE}
+s<-Data %>% 
+  filter(!is.na(DrifRed), DrifRed %in% c("Yes", "Not sure", "No"), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1, DrifRed) %>% 
+  summarise(n = n(), Txtend17=sum(XtendH17, na.rm=TRUE), Mxtend17=mean(XtendH17, na.rm=TRUE), Txtend18=sum(XtendH18, na.rm=TRUE), Mxtend18=mean(XtendH18, na.rm=TRUE), Txtend19=sum(XtendH19, na.rm=TRUE), Mxtend19=mean(XtendH19, na.rm=TRUE)) %>% 
+add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn) %>% 
+  mutate_at(5:11, round, 0) %>% 
+  select("State", "Role1", "DrifRed", "n", "Perc", "Txtend17", 'Mxtend17', "Txtend18", "Mxtend18", "Txtend19", "Mxtend19")
+
+#Write CSV in R
+#write.csv(s, file = "driftred.csv")
+
+
+kable(s, "latex", caption = "Addition of a drift reduction agent (DRA) in the tank-mix according to survey participants from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "Answer", "#", "%", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "Add drift reduction", "Respondents" = 2, "2017"=2, "2018"=2, "2019"=2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = c(1:3), latex_hline = "custom", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) %>% 
+  landscape()
+```
+
+```{r Question11plot, echo=FALSE, fig.cap="Addition of a drift reduction agent (DRA) in the tank-mix according to survey participants from Nebraska and Wisconsin", warning=FALSE}
+ggplot(s, aes(x=Role1, y=Perc, fill=DrifRed, label=Perc)) + geom_col(width=0.4, color="black") + 
+  labs(x="", y="% Respondents") + facet_wrap(~State) + scale_fill_brewer(name="Added drift reduction", palette="Set1") + 
+  #coord_polar(theta = "y", start = pi / 3) + 
+ #geom_text(aes(label = Perc), size = 5) +
+      theme(axis.text=element_text(size=13, color="black"), strip.text = element_text(size = 16, face="bold", color="black"),
+        axis.title=element_text(size=16, face="bold"), 
+        panel.background = element_rect(fill="white", color = "black"), 
+        panel.grid.major = element_line(color = "white"), 
+  panel.grid.minor = element_blank(), legend.key.width = unit(1.8, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position="bottom", legend.text = element_text(size = 14, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_text(size=14, face="bold")) + labs(x="", y="% of total respondents")
+```
+
+\newpage
+
+## Question 12 - Did you include glyphosate in the tank-mix?
+
+```{r Question12, echo=FALSE, message=FALSE, warning=FALSE}
+t<-Data %>% 
+  filter(!is.na(IncludeGLY), IncludeGLY %in% c("Yes", "Not sure", "No"), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1, IncludeGLY) %>% 
+  summarise(n = n(), Txtend17=sum(XtendH17, na.rm=TRUE), Mxtend17=mean(XtendH17, na.rm=TRUE), Txtend18=sum(XtendH18, na.rm=TRUE), Mxtend18=mean(XtendH18, na.rm=TRUE), Txtend19=sum(XtendH19, na.rm=TRUE), Mxtend19=mean(XtendH19, na.rm=TRUE)) %>% 
+ add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn) %>% 
+  mutate_at(5:11, round, 0) %>% 
+  select("State", "Role1", "IncludeGLY", "n", "Perc", "Txtend17", 'Mxtend17', "Txtend18", "Mxtend18", "Txtend19", "Mxtend19")
+
+#Write CSV in R
+#write.csv(t, file = "GLYP.csv")
+
+
+kable(t, "latex", caption = "Addition of glyphosate in the tank-mix according to survey participants from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "Answer", "#", "%", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "Include glyphosate", "Respondents" = 2, "2017"=2, "2018"=2, "2019"=2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = c(1:3), latex_hline = "custom", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) %>% 
+  landscape()
+```
+
+```{r Question12plot, echo=FALSE, fig.cap="Addition of glyphosate in the tank-mix according to survey participants from Nebraska and Wisconsin", warning=FALSE}
+ggplot(t, aes(x=Role1, y=Perc, fill=IncludeGLY, label=Perc)) + geom_col(width=0.4, color="black") + 
+  labs(x="", y="% Respondents") + facet_wrap(~State) + scale_fill_brewer(name="Include glyphosate", palette="Set1") + 
+      theme(axis.text.x=element_text(size=13, color="black"), strip.text = element_text(size = 16, face="bold", color="black"),
+        axis.title=element_text(size=16, face="bold"), 
+        panel.background = element_rect(fill="white", color = "black"), 
+        panel.grid.major = element_line(color = "white"), 
+  panel.grid.minor = element_blank(), legend.key.width = unit(1.8, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position="bottom", legend.text = element_text(size = 14, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_text(size=14, face="bold")) + labs(x="", y="% of total respondents")
+```
+
+\newpage
+
+## Question 13 - Did you include post-emergence herbicides other than glyphosate in the tank-mix?
+
+```{r Question13, echo=FALSE, message=FALSE, warning=FALSE}
+u<-Data %>% 
+  filter(!is.na(IncludePOST), IncludePOST %in% c("Yes", "Not sure", "No"), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1, IncludePOST) %>% 
+  summarise(n = n(), Txtend17=sum(XtendH17, na.rm=TRUE), Mxtend17=mean(XtendH17, na.rm=TRUE), Txtend18=sum(XtendH18, na.rm=TRUE), Mxtend18=mean(XtendH18, na.rm=TRUE), Txtend19=sum(XtendH19, na.rm=TRUE), Mxtend19=mean(XtendH19, na.rm=TRUE)) %>% 
+ add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn) %>% 
+  mutate_at(5:11, round, 0) %>% 
+  select("State", "Role1", "IncludePOST", "n", "Perc", "Txtend17", 'Mxtend17', "Txtend18", "Mxtend18", "Txtend19", "Mxtend19")
+
+# Write CSV in R
+#write.csv(u, file = "post.csv")
+
+
+kable(u, "latex", caption = "Addition of post-emergence herbicides other than glyphosate in the tank-mix according to survey participants from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "Answer", "#", "%", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "Include POST", "Respondents" = 2, "2017"=2, "2018"=2, "2019"=2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = c(1:3), latex_hline = "custom", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) %>% 
+  landscape()
+```
+
+
+```{r Question13plot, echo=FALSE, fig.cap="Addition of post-emergence herbicides other than glyphosate in the tank-mix according to survey participants from Nebraska and Wisconsin", warning=FALSE}
+ggplot(u, aes(x=Role1, y=Perc, fill=IncludePOST, label=Perc)) + geom_col(width=0.4, color="black") + 
+  labs(x="", y="% Respondents") + facet_wrap(~State) + scale_fill_brewer(name="Include POST (not glyphosate)", palette="Set1") + 
+  #coord_polar(theta = "y", start = pi / 3) + 
+ #geom_text(aes(label = Perc), size = 5) +
+      theme(axis.text=element_text(size=13, color="black"), strip.text = element_text(size = 16, face="bold", color="black"),
+        axis.title=element_text(size=16, face="bold"), 
+        panel.background = element_rect(fill="white", color = "black"), 
+        panel.grid.major = element_line(color = "white"), 
+  panel.grid.minor = element_blank(), legend.key.width = unit(1.8, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position="bottom", legend.text = element_text(size = 14, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_text(size=14, face="bold")) + labs(x="", y="% of total respondents")
+```
+
+
+\newpage
+
+## Question 14 - Did you include soil-residual herbicides (Group 15) in the POST-emergence tank-mix?
+
+```{r Question14, echo=FALSE, message=FALSE, warning=FALSE}
+v<-Data %>% 
+  filter(!is.na(IncludeG15), IncludeG15 %in% c("Yes", "Not sure", "No"), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1, IncludeG15) %>% 
+  summarise(n = n(), Txtend17=sum(XtendH17, na.rm=TRUE), Mxtend17=mean(XtendH17, na.rm=TRUE), Txtend18=sum(XtendH18, na.rm=TRUE), Mxtend18=mean(XtendH18, na.rm=TRUE), Txtend19=sum(XtendH19, na.rm=TRUE), Mxtend19=mean(XtendH19, na.rm=TRUE)) %>% 
+ add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn) %>% 
+  mutate_at(5:11, round, 0) %>% 
+  select("State", "Role1", "IncludeG15", "n", "Perc", "Txtend17", 'Mxtend17', "Txtend18", "Mxtend18", "Txtend19", "Mxtend19")
+
+#Write CSV in R
+#write.csv(v, file = "pre15.csv")
+
+
+kable(v, "latex", caption = "Addition of soil-residual herbicides (Group 15) in the POST-emergence tank-mix according to survey participants from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "Answer", "#", "%", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "Include group 15", "Respondents" = 2, "2017"=2, "2018"=2, "2019"=2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = c(1:3), latex_hline = "custom", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) %>% 
+  landscape()
+```
+
+```{r Question14plot, echo=FALSE, fig.cap="Addition of soil-residual herbicides (Group 15) in the POST-emergence tank-mix according to survey participants from Nebraska and Wisconsin", warning=FALSE}
+ggplot(v, aes(x=Role1, y=Perc, fill=IncludeG15, label=Perc)) + geom_col(width=0.4, color="black") + 
+  labs(x="", y="% Respondents") + facet_wrap(~State) + scale_fill_brewer(name="Include group 15 herbicide in POST", palette="Set1") + 
+  #coord_polar(theta = "y", start = pi / 3) + 
+ #geom_text(aes(label = Perc), size = 5) +
+      theme(axis.text=element_text(size=13, color="black"), strip.text = element_text(size = 16, face="bold", color="black"),
+        axis.title=element_text(size=16, face="bold"), 
+        panel.background = element_rect(fill="white", color = "black"), 
+        panel.grid.major = element_line(color = "white"), 
+  panel.grid.minor = element_blank(), legend.key.width = unit(1.8, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position="bottom", legend.text = element_text(size = 14, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_text(size=14, face="bold")) + labs(x="", y="% of total respondents")
+```
+
+\newpage
+
+## Question 15 - Did dicamba application in your Xtend soybeans injured neighboring soybean fields?
+
+```{r Question15, echo=FALSE, message=FALSE, warning=FALSE}
+x<-Data %>% 
+  filter(!is.na(DicambaInjuryNeigh), DicambaInjuryNeigh %in% c("Yes", "Not sure", "No"), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1, DicambaInjuryNeigh) %>% 
+  summarise(n = n(), Txtend17=sum(XtendH17, na.rm=TRUE), Mxtend17=mean(XtendH17, na.rm=TRUE), Txtend18=sum(XtendH18, na.rm=TRUE), Mxtend18=mean(XtendH18, na.rm=TRUE), Txtend19=sum(XtendH19, na.rm=TRUE), Mxtend19=mean(XtendH19, na.rm=TRUE)) %>% 
+ add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn) %>% 
+  mutate_at(5:11, round, 0) %>% 
+  select("State", "Role1", "DicambaInjuryNeigh", "n", "Perc", "Txtend17", 'Mxtend17', "Txtend18", "Mxtend18", "Txtend19", "Mxtend19")
+
+#Write CSV in R
+#write.csv(x, file = "dicambnei.csv")
+
+
+kable(x, "latex", caption = "Dicamba application in your Xtend soybeans injured neighboring soybean fields according to survey participants from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "Answer", "#", "%", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "Injury", "Respondents" = 2, "2017"=2, "2018"=2, "2019"=2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = c(1:3), latex_hline = "custom", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) %>% 
+  landscape()
+```
+
+```{r Question15plot, echo=FALSE, fig.cap="Dicamba application in your Xtend soybeans injured neighboring soybean fields according to survey participants from Nebraska and Wisconsin", warning=FALSE}
+ggplot(x, aes(x=Role1, y=Perc, fill=DicambaInjuryNeigh, label=Perc)) + geom_col(width=0.4, color="black") + 
+  labs(x="", y="% Respondents") + facet_wrap(~State) + scale_fill_brewer(name="Dicamba injured neighb non-Xtend soybeans", palette="Set1") + 
+  #coord_polar(theta = "y", start = pi / 3) + 
+ #geom_text(aes(label = Perc), size = 5) +
+      theme(axis.text=element_text(size=13, color="black"), strip.text = element_text(size = 16, face="bold", color="black"),
+        axis.title=element_text(size=16, face="bold"), 
+        panel.background = element_rect(fill="white", color = "black"), 
+        panel.grid.major = element_line(color = "white"), 
+  panel.grid.minor = element_blank(), legend.key.width = unit(1.8, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position="bottom", legend.text = element_text(size = 14, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_text(size=12, face="bold")) + labs(x="", y="% of total respondents")
+```
+
+\newpage
+
+## Question 16 - Has weed management in soybeans significantly improved with the adoption of Xtend soybean?
+
+```{r Question16, echo=FALSE, message=FALSE, warning=FALSE}
+y<-Data %>% 
+  filter(!is.na(ImpWeedC), ImpWeedC %in% c("Yes", "Not sure", "No"), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1, ImpWeedC) %>% 
+  summarise(n = n(), Txtend17=sum(XtendH17, na.rm=TRUE), Mxtend17=mean(XtendH17, na.rm=TRUE), Txtend18=sum(XtendH18, na.rm=TRUE), Mxtend18=mean(XtendH18, na.rm=TRUE), Txtend19=sum(XtendH19, na.rm=TRUE), Mxtend19=mean(XtendH19, na.rm=TRUE)) %>% 
+ add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn) %>% 
+  mutate_at(5:11, round, 0) %>% 
+  select("State", "Role1", "ImpWeedC", "n", "Perc", "Txtend17", 'Mxtend17', "Txtend18", "Mxtend18", "Txtend19", "Mxtend19")
+
+
+#Write CSV in R
+#write.csv(y, file = "impweedc.csv")
+
+
+
+kable(y, "latex", caption = "Weed management in soybeans significantly improved with the adoption of Xtend soybean according to survey participants from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "Answer", "#", "%", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "Improve weed control", "Respondents" = 2, "2017"=2, "2018"=2, "2019"=2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = c(1:3), latex_hline = "custom", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) %>% 
+  landscape()
+```
+
+```{r Question16plot, echo=FALSE, fig.cap="Weed management in soybeans significantly improved with the adoption of Xtend soybean according to survey participants from Nebraska and Wisconsin", warning=FALSE}
+ggplot(y, aes(x=Role1, y=Perc, fill=ImpWeedC, label=Perc)) + geom_col(width=0.4, color="black") + 
+  labs(x="", y="% Respondents") + facet_wrap(~State) + scale_fill_brewer(name="Improve weed management", palette="Set1") + 
+  #coord_polar(theta = "y", start = pi / 3) + 
+ #geom_text(aes(label = Perc), size = 5) +
+      theme(axis.text=element_text(size=13, color="black"), strip.text = element_text(size = 16, face="bold", color="black"),
+        axis.title=element_text(size=16, face="bold"), 
+        panel.background = element_rect(fill="white", color = "black"), 
+        panel.grid.major = element_line(color = "white"), 
+  panel.grid.minor = element_blank(), legend.key.width = unit(1.8, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position="bottom", legend.text = element_text(size = 14, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_text(size=14, face="bold")) + labs(x="", y="% of total respondents")
+```
+
+
+\newpage
+
+# NON-XTEND SOYBEAN ACRES
+
+## Question 17 - Did you notice dicamba injury in your non-Xtend soybeans?
+
+```{r Question17, echo=FALSE, message=FALSE, warning=FALSE}
+z<-Data %>% 
+  filter(!is.na(DicambaInjuryOwn), DicambaInjuryOwn %in% c("Yes", "Not sure", "No"), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1, DicambaInjuryOwn) %>% 
+  summarise(n = n(), Txtend17=sum(XtendH17, na.rm=TRUE), Mxtend17=mean(XtendH17, na.rm=TRUE), Txtend18=sum(XtendH18, na.rm=TRUE), Mxtend18=mean(XtendH18, na.rm=TRUE), Txtend19=sum(XtendH19, na.rm=TRUE), Mxtend19=mean(XtendH19, na.rm=TRUE)) %>% 
+add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn) %>% 
+  mutate_at(5:11, round, 0) %>% 
+  select("State", "Role1", "DicambaInjuryOwn", "n", "Perc", "Txtend17", 'Mxtend17', "Txtend18", "Mxtend18", "Txtend19", "Mxtend19")
+
+#Write CSV in R
+write.csv(z, file = "injown.csv")
+
+
+kable(z, "latex", caption = "Dicamba injury in your non-Xtend soybeans according to survey participants from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "Answer", "#", "%", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "Injury", "Respondents" = 2, "2017"=2, "2018"=2, "2019"=2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = c(1:3), latex_hline = "custom", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) %>% 
+  landscape()
+```
+
+```{r Question17plot, echo=FALSE, fig.cap="Dicamba injury in your non-Xtend soybeans according to survey participants from Nebraska and Wisconsin", warning=FALSE}
+ggplot(z, aes(x=Role1, y=Perc, fill=DicambaInjuryOwn, label=Perc)) + geom_col(width=0.4, color="black") + 
+  labs(x="", y="% Respondents") + facet_wrap(~State) + scale_fill_brewer(name="Dicamba injured own non-Xtend soybeans", palette="Set1") + 
+  #coord_polar(theta = "y", start = pi / 3) + 
+ #geom_text(aes(label = Perc), size = 5) +
+      theme(axis.text=element_text(size=13, color="black"), strip.text = element_text(size = 16, face="bold", color="black"),
+        axis.title=element_text(size=16, face="bold"), 
+        panel.background = element_rect(fill="white", color = "black"), 
+        panel.grid.major = element_line(color = "white"), 
+  panel.grid.minor = element_blank(), legend.key.width = unit(1.8, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position="bottom", legend.text = element_text(size = 14, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_text(size=14, face="bold")) + labs(x="", y="% of total respondents")
+```
+
+\newpage
+
+## Question 18- Did you file an official complaint with the Department of Agriculture?
+
+```{r Question18, echo=FALSE, message=FALSE, warning=FALSE}
+A<-Data %>% 
+  filter(!is.na(FileComp), FileComp %in% c("Yes", "No"), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1, FileComp) %>% 
+  summarise(n = n(), Txtend17=sum(XtendH17, na.rm=TRUE), Mxtend17=mean(XtendH17, na.rm=TRUE), Txtend18=sum(XtendH18, na.rm=TRUE), Mxtend18=mean(XtendH18, na.rm=TRUE), Txtend19=sum(XtendH19, na.rm=TRUE), Mxtend19=mean(XtendH19, na.rm=TRUE)) %>% 
+ add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn) %>% 
+  mutate_at(5:11, round, 0) %>% 
+  select("State", "Role1", "FileComp", "n", "Perc", "Txtend17", 'Mxtend17', "Txtend18", "Mxtend18", "Txtend19", "Mxtend19")
+
+#Write CSV in R
+#write.csv(A, file = "file.csv")
+
+
+
+kable(A, "latex", caption = "File an official complaint with the Department of Agriculture according to survey participants from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "Answer", "#", "%", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha", "T Xtend ha", "A Xtend ha"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "File official complaint", "Respondents" = 2, "2017"=2, "2018"=2, "2019"=2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = c(1:3), latex_hline = "custom", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) %>% 
+  landscape()
+```
+
+```{r Question18plot, echo=FALSE, fig.cap="File an official complaint with the Department of Agriculture according to survey participants from Nebraska and Wisconsin", warning=FALSE}
+ggplot(A, aes(x=Role1, y=Perc, fill=FileComp, label=Perc)) + geom_col(width=0.4, color="black") + 
+  labs(x="", y="% Respondents") + facet_wrap(~State) + scale_fill_brewer(name="File an official complaint", palette="Set1") + 
+  #coord_polar(theta = "y", start = pi / 3) + 
+ #geom_text(aes(label = Perc), size = 5) +
+      theme(axis.text=element_text(size=13, color="black"), strip.text = element_text(size = 16, face="bold", color="black"),
+        axis.title=element_text(size=16, face="bold"), 
+        panel.background = element_rect(fill="white", color = "black"), 
+        panel.grid.major = element_line(color = "white"), 
+  panel.grid.minor = element_blank(), legend.key.width = unit(1.8, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position="bottom", legend.text = element_text(size = 14, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_text(size=14, face="bold")) + labs(x="", y="% of total respondents")
+```
+
+\newpage
+
+## Question 19 - What do you believe was (were) the main cause(s) for dicamba injury on your non-Xtend soybean?
+
+Need to work on this Table
+
+```{r Question19, eval=FALSE, message=FALSE, include=FALSE, warning=FALSE}
+B<-Data %>% 
+  unite(CausesInj, CouseDicambaInjury, CouseDicambaInjury1, CouseDicambaInjury2, CouseDicambaInjury3, CouseDicambaInjury4, CouseDicambaInjury5, CouseDicambaInjury6, CouseDicambaInjury7, sep= "", remove =TRUE) %>% 
+  filter(!is.na(CausesInj), !is.na(Role1), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1, CausesInj) %>% 
+  summarise(n = n(), Txtend17=sum(XtendH17, na.rm=TRUE), Mxtend17=mean(XtendH17, na.rm=TRUE), Txtend18=sum(XtendH18, na.rm=TRUE), Mxtend18=mean(XtendH18, na.rm=TRUE), Txtend19=sum(XtendH19, na.rm=TRUE), Mxtend19=mean(XtendH19, na.rm=TRUE)) %>% 
+  add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn) %>% 
+  mutate_at(5:11, round, 0) %>% 
+  select("State", "Role1", "CausesInj", "n", "Perc", "Txtend17", 'Mxtend17', "Txtend18", "Mxtend18", "Txtend19", "Mxtend19")
+
+
+
+
+kable(B, "latex", caption = "Main cause(s) for dicamba injury on your non-Xtend soybean according to survey participants from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "Answer", "#", "%", "Xtend ha", "Xtend ha", "Xtend ha", "Xtend ha", "Xtend ha", "Xtend ha"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "Cause Injury", "Respondents" = 2, "2017"=2, "2018"=2, "2019"=2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = c(1:3), latex_hline = "custom", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep", 
+                       "A=Tank-contamination", "B=Physical drift during application in corn",  "c=Physical drift during application in Xtend soybean",
+                       "D=Dicamba volatilization from application in corn", "E=Dicamba volatilization from application in Xtend soybean",
+                       "F=Temperature inversion from application in corn", "G=Temperature inversion from application in Xtend soybean",
+                       "H=Other or Not sure")) %>% 
+  landscape()
+```
+
+\newpage
+
+```{r Question19new, message=FALSE, include=FALSE, warning=FALSE}
+Reason=c("A", "B", "C", "D", "E", "F", "G", "A", "B", "C", "D", "E", "F", "G","A", "B", "C", "D", "E", "F", "G", "A", "B", "C", "D", "E", "F", "G")
+State=c("Nebraska", "Nebraska", "Nebraska", "Nebraska", "Nebraska", "Nebraska", "Nebraska", "Nebraska", "Nebraska", "Nebraska", "Nebraska", "Nebraska", "Nebraska", "Nebraska", "Wisconsin", "Wisconsin", "Wisconsin", "Wisconsin", "Wisconsin",  "Wisconsin", "Wisconsin", "Wisconsin", "Wisconsin", "Wisconsin", "Wisconsin", "Wisconsin", "Wisconsin", "Wisconsin") 
+Role1=c("Farmer", "Farmer", "Farmer", "Farmer", "Farmer", "Farmer", "Farmer", "Decision influencer",  "Decision influencer", "Decision influencer", "Decision influencer", "Decision influencer", "Decision influencer", "Decision influencer", "Farmer", "Farmer", "Farmer", "Farmer", "Farmer", "Farmer", "Farmer","Decision influencer", "Decision influencer", "Decision influencer", "Decision influencer", "Decision influencer", "Decision influencer", "Decision influencer")
+Perc=c(16, 27, 22, 33, 35, 13, 17, 23, 26, 37, 51, 26, 6, 9, 0, 25, 25, 58, 25, 17, 8, 23, 15, 31, 15, 23, 0, 15)
+Answer=c(82, 82,82,82,82,82,82,35,35,35,35,35,35,35,12,12,12,12,12,12,12,13,13,13,13,13,13,13)
+
+FF<-data.frame(State, Role1, Reason, Answer, Perc)
+
+FF$Reason<-factor(FF$Reason, levels = c("G", "F", "E", "D", "C", "B", "A"), labels = c("g) T inv Xtend", "f) T inv corn", "e) D vol Xtend", "d) D vol corn", "c) P drift Xtend", "b) P drift corn", "a) Tank"))
+
+
+kable(FF, "latex", caption = "Main cause(s) for dicamba injury on your non-Xtend soybean according to survey participants from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "Answer", "#", "%"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "Cause Injury", "Respondents" = 2, "2017"=2, "2018"=2, "2019"=2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = c(1:3), latex_hline = "custom", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+
+
+```{r Question19plot, echo=FALSE, fig.height=6, fig.width=10, fig.cap="Main cause(s) for dicamba injury on your non-Xtend soybean according to survey participants from Nebraska and Wisconsin", warning=FALSE, fig.pos="h"}
+ggplot(FF, aes(x=Reason, y=Perc, fill=Role1)) + geom_col(width=0.7, stat="identity", color="black", data=subset(FF, Role1=="Farmer"), aes(y=Perc)) +  
+  geom_col(width=0.7, stat="identity", color="black",  data=subset(FF, Role1=="Decision influencer"), aes(y=-Perc)) +
+  geom_label(aes(label=str_c(format(abs(Perc)), "%")), fill="white", data=subset(FF, Role1=="Farmer"), position = position_stack(vjust = 1), size=8) +
+  geom_label(aes(label=str_c(format(abs(Perc)), "%")), fill="white", data=subset(FF, Role1=="Decision influencer"), position = position_stack(vjust = -1), size=8) +
+  coord_flip() +  annotate("text", x = 7.5, y =0, label = c("n=117", "n=25"), size=5)  +
+  scale_y_continuous(limits= c(-60, 60), labels=abs) +
+  theme_economist_white() +
+  labs(title="Q19. Main cause(s)", y="% respondents", x="", caption = "Source: University of Wisconsin-Madison and University of Nebraska-Lincoln, 2018") + 
+  theme(axis.title.x=element_text(size=22, face="bold", vjust=-2), axis.text.y=element_text(size=25, color="blue", face="bold"), axis.text.x=element_blank(), legend.position = "bottom", legend.title=element_blank(), legend.key.width = unit(2.2, "line"), legend.text = element_text(size=20), plot.title=element_text(size=30, face="bold", hjust = -0.24, color="red"), strip.text= element_text(size = 26, color="black", face="bold")) + facet_wrap(~State)  + 
+  scale_fill_brewer(palette="Blues") +
+  ggsave("Reason.png", width = 18, height = 10, dpi = 600)
+```
+
+
+\newpage
+
+## Question 20 - Do you expect yield reduction in your dicamba injured soybean?
+
+```{r Question20, echo=FALSE, message=FALSE, warning=FALSE}
+C<-Data %>% 
+  filter(!is.na(YieldRedSoyInjury), YieldRedSoyInjury %in% c("Yes", "No"), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1, YieldRedSoyInjury) %>% 
+  summarise(n = n(), Txtend17=sum(XtendH17, na.rm=TRUE), Mxtend17=mean(XtendH17, na.rm=TRUE), Txtend18=sum(XtendH18, na.rm=TRUE), Mxtend18=mean(XtendH18, na.rm=TRUE), Txtend19=sum(XtendH19, na.rm=TRUE), Mxtend19=mean(XtendH19, na.rm=TRUE)) %>% 
+ add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn) %>% 
+  mutate_at(5:11, round, 0) %>% 
+  select("State", "Role1", "YieldRedSoyInjury", "n", "Perc", "Txtend17", 'Mxtend17', "Txtend18", "Mxtend18", "Txtend19", "Mxtend19")
+
+#Write CSV in R
+#write.csv(C, file = "yieldred.csv")
+
+
+
+kable(C, "latex", caption = "Expect yield reduction in your dicamba injured soybean according to survey participants from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "Answer", "#", "%", "Xtend ha", "Xtend ha", "Xtend ha", "Xtend ha", "Xtend ha", "Xtend ha"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "Expected yield reduction", "Respondents" = 2, "2017"=2, "2018"=2, "2019"=2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = c(1:3), latex_hline = "custom", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) %>% 
+  landscape()
+```
+
+
+```{r Question20plot, echo=FALSE, fig.cap="Expect yield reduction in your dicamba injured soybean according to survey participants from Nebraska and Wisconsin", warning=FALSE}
+ggplot(C, aes(x=Role1, y=Perc, fill=YieldRedSoyInjury, label=Perc)) + geom_col(width=0.4, color="black") + 
+  labs(x="", y="% Respondents") + facet_wrap(~State) + scale_fill_brewer(name="Expect yield reduction in injured soybeans", palette="Set1") + 
+  #coord_polar(theta = "y", start = pi / 3) + 
+ #geom_text(aes(label = Perc), size = 5) +
+      theme(axis.text=element_text(size=13, color="black"), strip.text = element_text(size = 16, face="bold", color="black"),
+        axis.title=element_text(size=16, face="bold"), 
+        panel.background = element_rect(fill="white", color = "black"), 
+        panel.grid.major = element_line(color = "white"), 
+  panel.grid.minor = element_blank(), legend.key.width = unit(1.8, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position="bottom", legend.text = element_text(size = 14, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_text(size=14, face="bold")) + labs(x="", y="% of total respondents")
+```
+
+\newpage
+
+## Question 21 - Do you think the technology should be available to producers next growing season
+
+```{r Question21, echo=FALSE, message=FALSE, warning=FALSE}
+D<-Data %>% 
+  filter(!is.na(KeepXtend), KeepXtend %in% c("Yes", "No"), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1, KeepXtend) %>% 
+  summarise(n = n(), Txtend17=sum(XtendH17, na.rm=TRUE), Mxtend17=mean(XtendH17, na.rm=TRUE), Txtend18=sum(XtendH18, na.rm=TRUE), Mxtend18=mean(XtendH18, na.rm=TRUE), Txtend19=sum(XtendH19, na.rm=TRUE), Mxtend19=mean(XtendH19, na.rm=TRUE)) %>% 
+ add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn) %>% 
+  mutate_at(5:11, round, 0) %>% 
+  select("State", "Role1", "KeepXtend", "n", "Perc", "Txtend17", 'Mxtend17', "Txtend18", "Mxtend18", "Txtend19", "Mxtend19")
+
+#Write CSV in R
+#write.csv(D, file = "nexty.csv")
+
+
+
+kable(D, "latex", caption = "The Xtend technology should be available to producers next growing season according to survey participants from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "Answer", "#", "%", "Xtend ha", "Xtend ha", "Xtend ha", "Xtend ha", "Xtend ha", "Xtend ha"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "Keep Xtend", "Respondents" = 2, "2017"=2, "2018"=2, "2019"=2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = c(1:3), latex_hline = "custom", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) %>% 
+  landscape()
+```
+
+```{r Question21plot, echo=FALSE, fig.cap="The Xtend technology should be available to producers next growing season according to survey participants from Nebraska and Wisconsin", warning=FALSE}
+ggplot(D, aes(x=Role1, y=Perc, fill=KeepXtend, label=Perc)) + geom_col(width=0.4, color="black") + 
+  labs(x="", y="% Respondents") + facet_wrap(~State) + scale_fill_brewer(name="Keep Xtend technology", palette="Set1") + 
+  #coord_polar(theta = "y", start = pi / 3) + 
+ #geom_text(aes(label = Perc), size = 5) +
+      theme(axis.text=element_text(size=13, color="black"), strip.text = element_text(size = 16, face="bold", color="black"),
+        axis.title=element_text(size=16, face="bold"), 
+        panel.background = element_rect(fill="white", color = "black"), 
+        panel.grid.major = element_line(color = "white"), 
+  panel.grid.minor = element_blank(), legend.key.width = unit(1.8, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position="bottom", legend.text = element_text(size = 14, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_text(size=14, face="bold")) + labs(x="", y="% of total respondents")
+```
+
+\newpage
+
+## Question 22 
+
+Any thoughts you would like to share regarding Xtend soybean
+
+```{r Question22, eval=FALSE, message=FALSE, include=FALSE, warning=FALSE}
+E<-Data %>% 
+  filter(!is.na(Comments)) %>% 
+  group_by(Role1) %>% 
+  count(Comments) 
+kable(E, "latex", booktabs = T) %>%
+  kable_styling(latex_options = "striped")
+```
+
+
+
+
+
+
+```{r}
+AAA=read_csv("application.csv")
+AAA$Question=factor(AAA$Question, levels=c("ImpWC", "IncludeG15", "IncludePOST", "IncludeGLY","UsePRE", "OwnSpr"), labels=c("noticed improved weed control w/ Xtend?",  "include soil-applied (G15) in POST?", "include other POST (not glyphosate)?",  "include glyphosate in POST?", "use effective PRE w/ multiple SOA?", "own sprayer/spray herbicide?"))
+
+ggplot(AAA, aes(x=Question, y=Perc, fill=Answer, group=Role)) + geom_col(width=0.5, stat="identity", color="black", data=subset(AAA, Role=="Farmer"), aes(group=Role, y=Perc)) +  
+  geom_col(width=0.5, stat="identity", color="black",  data=subset(AAA, Role=="Decision influencer"), aes(group=Role, y=-Perc)) +
+  #geom_label(aes(label=str_c(format(abs(Perc)), "%")), fill="white", data=subset(AAA, Role1=="Farmer"), position = position_stack(vjust = 1), size=3) +
+  #geom_label(aes(label=str_c(format(abs(Perc)), "%")), fill="white", data=subset(AAA, Role1=="Decision influencer"), position = position_stack(vjust = -1), size=3) +
+  coord_flip() +
+  scale_y_continuous(limits= c(-100, 100), labels=abs) +
+  theme_economist(base_family = "sans", horizontal = TRUE) +  annotate("text", x = 6.4, y =50, label = "Farmer", size=4, face="italic") +  annotate("text", x = 6.4, y =-50, label = "Decision influencer", size=4) +
+   annotate("text", x = 6.4, y =-50, label = "Decision influencer", size=4) +  annotate("text", x = 6.4, y =-50, label = "Decision influencer", size=4) +  
+  annotate("text", x = 5.6, y =0, label = c("n=309", "n=145"), size=2.5) +
+  annotate("text", x = 4.6, y =0, label = c("n=307", "n=147"), size=2.5) +
+  annotate("text", x = 3.6, y =0, label = c("n=157", "n=59"), size=2.5) +
+  annotate("text", x = 2.6, y =0, label = c("n=156", "n=57"), size=2.5) +
+  annotate("text", x = 1.6, y =0, label = c("n=150", "n=62"), size=2.5) +
+  annotate("text", x = 0.6, y =0, label = c("n=163", "n=79"), size=2.5) +
+  labs(title="Weed management", y="% respondents", x="", subtitle = "Do (Did) you...", caption = "Source: University of Wisconsin-Madison and University of Nebraska-Lincoln, 2018") + 
+  theme(axis.title=element_text(size=16,face="bold"), axis.text=element_text(size=13, color="black"), legend.position = "bottom", legend.title=element_text(size=12, face="bold"), plot.title=element_text(size=18, face="bold", hjust = -0.62), plot.subtitle=element_text(size=15, hjust = -0.5, vjust=-5), strip.text= element_text(size = 16, color="black", face="bold")) + facet_wrap(~State)  + scale_fill_manual(name="Answer",  values=c("lightcoral", "ivory", "lightgreen")) + 
+  #scale_fill_economist() +
+  ggsave("Application.tiff", width = 12, height = 6, dpi = 600)
+```
+
+
+
+
+
+
+
+
+
+```{r}
+BBB=read_csv("Dicambaissue.csv")
+BBB$Question=factor(BBB$Question, levels=c("KeepXtend", "yield", "FileComp", "Neigh", "Own", "DrifRed"), labels=c("think Xtend should be available next year?", "expect yield reduction in your injured soybean?", "file a complaint w/ Department of Agriculture?", "notice dicamba injury neighb non-Xtend soybeans?", "notice dicamba injury own non-Xtend soybeans?", "use a drift reduction agent?"))
+
+ggplot(BBB, aes(x=Question, y=Perc, fill=Answer, group=Role)) + geom_col(width=0.5, color="black", stat="identity", data=subset(BBB, Role=="Farmer"), aes(group=Role, y=Perc)) +  
+  geom_col(width=0.5, stat="identity", color="black",  data=subset(BBB, Role=="Decision influencer"), aes(group=Role, y=-Perc)) +
+  #geom_label(aes(label=str_c(format(abs(Perc)), "%")), fill="white", data=subset(BBB, Role=="Farmer"), position = position_stack(vjust = 1), size=2) +
+  #geom_label(aes(label=str_c(format(abs(Perc)), "%")), fill="white", data=subset(BBB, Role=="Decision influencer"), position = position_stack(vjust = -1), size=2) +
+  coord_flip() + #geom_label_repel(aes(label=str_c(format(abs(Perc)), "%")), fill="white", data=subset(BBB, Role=="Decision influencer"), position = position_stack(vjust = -1), size=2) + geom_label_repel(aes(label=str_c(format(abs(Perc)), "%")), fill="white", data=subset(BBB, Role=="Farmer"), position = position_stack(vjust = -1), size=2) +
+  scale_y_continuous(limits= c(-100, 100), labels=abs) +
+  theme_economist() +  annotate("text", x = 6.4, y =50, label = "Farmer", size=4, face="italic") +  annotate("text", x = 6.4, y =-50, label = "Decision influencer", size=4, face="italic") +
+   annotate("text", x = 5.6, y =0, label = c("n=152", "n=59"), size=2.5) + 
+     annotate("text", x = 4.6, y =0, label = c("n=194", "n=81"), size=2.5) +
+  annotate("text", x = 3.6, y =0, label = c("n=158", "n=73"), size=2.5) + 
+  annotate("text", x = 2.6, y =0, label = c("n=170", "n=67"), size=2.5) + 
+  annotate("text", x = 1.6, y =0, label = c("n=126", "n=51"), size=2.5) +
+  annotate("text", x = 0.6, y =0, label = c("n=267", "n=121"), size=2.5) +
+  labs(title="Dicamba use", y="% respondents", x="", subtitle = "Do (Did) you...", caption = "Source: University of Wisconsin-Madison and University of Nebraska-Lincoln, 2018") + 
+  theme(axis.title=element_text(size=16,face="bold"), axis.text=element_text(size=13, color="black"), legend.position = "right", legend.title=element_text(size=12, face="bold"), plot.title=element_text(size=18, face="bold", hjust = -0.97), plot.subtitle=element_text(size=15, hjust = -0.88, vjust=-5), strip.text= element_text(size = 16, color="black", face="bold")) + facet_wrap(~State)  + scale_fill_manual(name="Answer",  values=c("lightcoral", "ivory", "lightgreen")) +
+  ggsave("Dicamba.png", width = 12, height = 6, dpi = 600)
+```
+
+
+
+```{r}
+CCC=read_csv("Newdata.csv") %>% 
+  filter(Part=="two")
+
+CCC$Question=factor(CCC$Question, levels=c("ImpWC", "Neigh",  "IncludeG15", "IncludePOST", "IncludeGLY", "DrifRed"), labels=c("Q16 - Improved", "Q15 - Drift", "Q14 - Soil-residual",  "Q13 - Other POST", "Q12 - Glyphosate", "Q11 - DRA"))
+
+ggplot(CCC, aes(x=Question, y=Perc, fill=Answer, group=Role)) + geom_col(width=0.5, color="black", stat="identity", data=subset(CCC, Role=="Farmer"), aes(group=Role, y=Perc)) +  
+  geom_col(width=0.5, stat="identity", color="black",  data=subset(CCC, Role=="Decision influencer"), aes(group=Role, y=-Perc)) +
+  #geom_label(aes(label=str_c(format(abs(Perc)), "%")), fill="white", data=subset(CCC, Role=="Farmer"), position = position_stack(vjust = 1), size=2) +
+  #geom_label(aes(label=str_c(format(abs(Perc)), "%")), fill="white", data=subset(CCC, Role=="Decision influencer"), position = position_stack(vjust = -1), size=2) +
+  coord_flip() + #geom_label_repel(aes(label=str_c(format(abs(Perc)), "%")), fill="white", data=subset(CCC, Role=="Decision influencer"), position = position_stack(vjust = -1), size=2) + geom_label_repel(aes(label=str_c(format(abs(Perc)), "%")), fill="white", data=subset(CCC, Role=="Farmer"), position = position_stack(vjust = -1), size=2) +
+  scale_y_continuous(limits= c(-100, 100), labels=abs) +
+  theme_economist_white() +  annotate("text", x = 6.4, y =50, label = "Farmer", size=7, face="italic") +  annotate("text", x = 6.4, y =-50, label = "Decision influencer", size=7, face="italic") +
+  annotate("text", x = 5.6, y =0, label = c("n=152", "n=61"), size=5) + 
+  annotate("text", x = 4.6, y =0, label = c("n=157", "n=59"), size=5) +
+  annotate("text", x = 3.6, y =0, label = c("n=156", "n=57"), size=5) + 
+  annotate("text", x = 2.6, y =0, label = c("n=150", "n=62"), size=5) + 
+  annotate("text", x = 1.6, y =0, label = c("n=158", "n=73"), size=5) +
+  annotate("text", x = 0.6, y =0, label = c("n=163", "n=79"), size=5) +
+  labs(title="Do (Did) you...", y="% respondents", x="", caption = "Source: University of Wisconsin-Madison and University of Nebraska-Lincoln, 2018") + 
+  theme(axis.title=element_text(size=20,face="bold"), axis.text.y=element_text(size=25, color="red", face="bold"), axis.text.x=element_text(size=20, color="black"), legend.position = "bottom", legend.title=element_text(size=20, face="bold"), legend.key.width = unit(2.8, "line"), legend.text = element_text(size=23), plot.title=element_text(size=30, face="bold", hjust = -1.225, color="red"), strip.text= element_text(size = 26, color="black", face="bold")) + facet_wrap(~State)  + #scale_fill_manual(name="Answer",  values=c("lightcoral", "ivory", "lightgreen"))  
+  scale_fill_brewer(palette="Blues") +
+  ggsave("Section2.png", width = 18, height = 10, dpi = 600)
+```
+
+
+
+
+```{r}
+DDD=read_csv("Newdata.csv") %>% 
+  filter(Part=="three")
+
+DDD$Question=factor(DDD$Question, levels=c("KeepXtend", "yield", "FileComp", "Own"), labels=c("Q21. Available", "Q20. Yield", "Q18. File", "Q17. Drift"))
+
+ggplot(DDD, aes(x=Question, y=Perc, fill=Answer, group=Role)) + geom_col(width=0.4, color="black", stat="identity", data=subset(DDD, Role=="Farmer"), aes(group=Role, y=Perc)) +  
+  geom_col(width=0.4, stat="identity", color="black",  data=subset(DDD, Role=="Decision influencer"), aes(group=Role, y=-Perc)) +
+    coord_flip() +
+  scale_y_continuous(limits= c(-100, 100), labels=abs) +
+  theme_economist_white() +  
+  annotate("text", x = 4.3, y =50, label = "Farmer", size=7, face="italic") +  annotate("text", x = 4.3, y =-50, label = "Decision influencer", size=7, face="italic") +
+  annotate("text", x = 3.7, y =0, label = c("n=194", "n=81"), size=5) + 
+  annotate("text", x = 2.7, y =0, label = c("n=170", "n=67"), size=5) + 
+  annotate("text", x = 1.7, y =0, label = c("n=126", "n=51"), size=5) +
+  annotate("text", x = 0.7, y =0, label = c("n=267", "n=121"), size=5) +
+  labs(title="Do (Did) you...", y="% respondents", x="", caption = "Source: University of Wisconsin-Madison and University of Nebraska-Lincoln, 2018") + 
+  theme(axis.title=element_text(size=20,face="bold"), axis.text.y=element_text(size=25, color="red", face="bold"), axis.text.x=element_text(size=20, color="black"), legend.position = "bottom", legend.title=element_text(size=20, face="bold"), legend.key.width = unit(2.8, "line"), legend.text = element_text(size=23), plot.title=element_text(size=30, face="bold", hjust = -1.1, color="red"), strip.text= element_text(size = 26, color="black", face="bold")) + facet_wrap(~State)  + #scale_fill_manual(name="Answer",  values=c("lightcoral", "ivory", "lightgreen"))  
+  scale_fill_brewer(palette="Blues") +
+  ggsave("Section3.png", width = 18, height = 10, dpi = 600)
+```
+
+
+
+```{r}
+FFF=read_csv("Newdata.csv") %>% 
+  filter(Part=="before")
+
+FFF$Question=factor(FFF$Question, levels=c("UsePRE", "OwnSpr"), labels=c("Q8. PRE", "Q7. Sprayer"))
+
+ggplot(FFF, aes(x=Question, y=Perc, fill=Answer, group=Role)) + geom_col(width=0.3, color="black", stat="identity", data=subset(FFF, Role=="Farmer"), aes(group=Role, y=Perc)) +  
+  geom_col(width=0.3, stat="identity", color="black",  data=subset(FFF, Role=="Decision influencer"), aes(group=Role, y=-Perc)) +
+    coord_flip() +
+  scale_y_continuous(limits= c(-100, 100), labels=abs) +
+  theme_economist_white() + annotate("text", x = 2.2, y =50, label = "Farmer", size=8, face="italic") +  annotate("text", x = 2.2, y =-50, label = "Decision influencer", size=8, face="italic") +
+  annotate("text", x = 1.8, y =0, label = c("n=241", "n=145"), size=6) +
+  annotate("text", x = 0.8, y =0, label = c("n=307", "n=147"), size=6) +
+  labs(title="Do (Did) you...", y="% respondents", x="", caption = "Source: University of Wisconsin-Madison and University of Nebraska-Lincoln, 2018") + 
+  theme(axis.title=element_text(size=23,face="bold"), axis.text.y=element_text(size=30, color="red", face="bold"), axis.text.x=element_text(size=18, color="black"), legend.position = "bottom", legend.title=element_text(size=25, face="bold"), legend.key.width = unit(2.8, "line"), legend.text = element_text(size=25), plot.title=element_text(size=35, face="bold", hjust = -0.62, color="red"), strip.text= element_text(size = 33, color="black", face="bold")) + facet_wrap(~State)  + 
+  scale_fill_brewer(palette="Blues") +
+  ggsave("Section1.png", width = 18, height = 10, dpi = 600)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+EE=read_csv("Newdata.csv") 
+
+
+EE$Question=factor(EE$Question, levels=c("NA","KeepXtend", "yield", "FileComp", "Own", "ImpWC", "Neigh",  "IncludeG15", "IncludePOST", "IncludeGLY", "DrifRed", "UsePRE", "OwnSpr"), labels=c("","think Xtend should be available next year?", "expect yield reduction in your injured soybean?", "file a complaint w/ Department of Agriculture?", "notice dicamba injury own non-Xtend soybeans?", "noticed improved weed control w/ Xtend?", "notice dicamba injury neighb non-Xtend soybeans?", "include soil-applied (WSSA #15) in POST?",  "include other POST (not glyphosate)?", "include glyphosate in POST tank-mix w/ dicamba?", "use a drift reduction agent?", "use effective PRE w/ multiple SOA?", "own sprayer/spray herbicide?"))
+
+ggplot(EE, aes(x=Question, y=Perc, fill=Answer, group=Role)) + geom_col(width=0.5, color="black", stat="identity", data=subset(EE, Role=="Farmer"), aes(group=Role, y=Perc)) +  
+  geom_col(width=0.5, stat="identity", color="black",  data=subset(EE, Role=="Decision influencer"), aes(group=Role, y=-Perc)) +
+  coord_flip() + geom_vline(xintercept=10.5, size=2, linetype="dashed", color="blue") +
+  geom_vline(xintercept=5.5, size=2, linetype="dashed", color="blue") +
+  scale_y_continuous(limits= c(-100, 100), labels=abs) +
+  theme_economist() +  
+  annotate("text", x = 13, y =50, label = "Farmer", size=4.5, face="italic") +  annotate("text", x = 13, y =-50, label = "Decision influencer", size=4.5, face="italic") +
+  annotate("text", x = 10.6, y =0, label = c("n=152", "n=59"), size=2) + 
+  annotate("text", x = 9.6, y =0, label = c("n=152", "n=59"), size=2) + 
+  annotate("text", x = 8.6, y =0, label = c("n=194", "n=81"), size=2) +
+  annotate("text", x = 7.6, y =0, label = c("n=158", "n=73"), size=2) + 
+  annotate("text", x = 6.6, y =0, label = c("n=170", "n=67"), size=2) + 
+  annotate("text", x = 5.6, y =0, label = c("n=126", "n=51"), size=2) +
+  annotate("text", x = 4.6, y =0, label = c("n=267", "n=121"), size=2) +
+  annotate("text", x = 3.6, y =0, label = c("n=194", "n=81"), size=2) + 
+  annotate("text", x = 2.6, y =0, label = c("n=170", "n=67"), size=2) + 
+  annotate("text", x = 1.6, y =0, label = c("n=126", "n=51"), size=2) +
+  annotate("text", x = 0.6, y =0, label = c("n=267", "n=121"), size=2) +
+  labs(title="Non-Xtend soybean hectares", y="% respondents", x="", subtitle = "Do (Did) you...", caption = "Source: University of Wisconsin-Madison and University of Nebraska-Lincoln, 2018") + 
+  theme(axis.title=element_text(size=20,face="bold"), axis.text=element_text(size=13, color="black"), legend.position = "right", legend.title=element_text(size=12, face="bold"), plot.title=element_text(size=25, face="bold", hjust = -2.35), plot.subtitle=element_text(size=20, hjust = -0.825, vjust=-5), strip.text= element_text(vjust=2.8, size = 20, color="black", face="bold")) + facet_wrap(~State)  + scale_fill_manual(name="Answer",  values=c("lightcoral", "ivory", "lightgreen")) +
+  ggsave("Section.png", width = 12, height = 6, dpi = 600)
+```
+
+
+
+
+
+
+
+
+
+
+

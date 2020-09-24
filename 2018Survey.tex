@@ -1,0 +1,1018 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={2018 Soybean Production and Dicamba Survey},
+            pdfauthor={Maxwel Coura Oliveira and Rodrigo Werle},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{2018 Soybean Production and Dicamba Survey}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Maxwel Coura Oliveira and Rodrigo Werle}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{11/9/2018}
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+
+\begin{document}
+\maketitle
+
+\section{Demographics}\label{demographics}
+
+\subsection{Question 1}\label{question-1}
+
+County
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+County & Role1 & n\\
+\midrule
+\showrowcolors
+Barron & Decision maker & 4\\
+Barron & Farmer & 8\\
+Brown & Decision maker & 1\\
+Buffalo & Decision maker & 2\\
+Buffalo & Farmer & 6\\
+\addlinespace
+Calumet & Decision maker & 1\\
+Chippewa & Decision maker & 2\\
+Chippewa & Farmer & 7\\
+Clark & Decision maker & 1\\
+Clark & Farmer & 1\\
+\addlinespace
+Columbia & Decision maker & 1\\
+Columbia & Farmer & 1\\
+Dane & Decision maker & 1\\
+Dane & Farmer & 1\\
+Dann & Farmer & 1\\
+\addlinespace
+Delaware & Farmer & 1\\
+Dodge & Decision maker & 1\\
+Dodge & Farmer & 6\\
+Douglas & Decision maker & 1\\
+Dunn & Farmer & 2\\
+\addlinespace
+Fond du Lac & Decision maker & 1\\
+Fond du Lac & Farmer & 4\\
+Grant & Decision maker & 3\\
+Grant & Farmer & 6\\
+Green & Farmer & 1\\
+\addlinespace
+Green & Decision maker & 2\\
+Green & Farmer & 2\\
+Iowa & Decision maker & 2\\
+Jackson & Farmer & 3\\
+Jadoer & Decision maker & 1\\
+\addlinespace
+Jefferson & Decision maker & 1\\
+Jefferson & Farmer & 2\\
+Juneau & Farmer & 6\\
+Kewaunee & Farmer & 1\\
+La Crosse & Decision maker & 1\\
+\addlinespace
+La Crosse & Farmer & 4\\
+Lafayette & Decision maker & 2\\
+Lafayette & Farmer & 5\\
+Monroe &  & 2\\
+Monroe & Farmer & 9\\
+\addlinespace
+Oconto & Decision maker & 1\\
+Outagamie & Farmer & 1\\
+Outagamie & Decision maker & 1\\
+Pepin & Decision maker & 1\\
+Pierce & Farmer & 1\\
+\addlinespace
+Portage & Farmer & 3\\
+Racine & Farmer & 2\\
+Rock & Decision maker & 8\\
+Rock & Farmer & 6\\
+Sauk & Decision maker & 1\\
+\addlinespace
+Shawano & Decision maker & 1\\
+Sheboygan & Decision maker & 1\\
+Sheboygan & Farmer & 1\\
+St. Croix & Decision maker & 2\\
+St. Croix & Farmer & 1\\
+\addlinespace
+Trempatenn & Decision maker & 1\\
+Trempealeau & Farmer & 2\\
+Vernon & Decision maker & 2\\
+Walworth & Decision maker & 1\\
+Walworth & Farmer & 2\\
+\addlinespace
+Washburn & Decision maker & 1\\
+Washington & Farmer & 1\\
+Waushara & Farmer & 1\\
+Winnebago & Farmer & 2\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 2}\label{question-2}
+
+Your Role
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{lr}
+\hiderowcolors
+\toprule
+Role1 & n\\
+\midrule
+\showrowcolors
+ & 2\\
+Decision maker & 49\\
+Farmer & 100\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 3}\label{question-3}
+
+Total soybean acres planted/managed in
+
+\subsubsection{2017}\label{section}
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{lrrrrr}
+\hiderowcolors
+\toprule
+Role1 & n & average & minimum & maximum & sum\\
+\midrule
+\showrowcolors
+ & 2 & 126.0000 & 2 & 250 & 252\\
+Decision maker & 43 & 8856.5814 & 20 & 60000 & 380833\\
+Farmer & 99 & 513.5051 & 0 & 4000 & 50837\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsubsection{2018}\label{section-1}
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{lrrrrr}
+\hiderowcolors
+\toprule
+Role1 & n & average & minimum & maximum & sum\\
+\midrule
+\showrowcolors
+ & 2 & 141.0000 & 32 & 250 & 282\\
+Decision maker & 45 & 9851.7778 & 0 & 60000 & 443330\\
+Farmer & 99 & 554.9091 & 0 & 3500 & 54936\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsubsection{2019}\label{section-2}
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{lrrrrr}
+\hiderowcolors
+\toprule
+Role1 & n & average & minimum & maximum & sum\\
+\midrule
+\showrowcolors
+ & 1 & 250.0000 & 250 & 250 & 250\\
+Decision maker & 44 & 12273.8636 & 25 & 80000 & 540050\\
+Farmer & 95 & 524.8947 & 0 & 3500 & 49865\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 4}\label{question-4}
+
+. Total Xtend soybean acres planted/managed in
+
+\subsubsection{2017}\label{section-3}
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{lrrrrr}
+\hiderowcolors
+\toprule
+Role1 & n & average & minimum & maximum & sum\\
+\midrule
+\showrowcolors
+ & 1 & 0.0000 & 0 & 0 & 0\\
+Decision maker & 43 & 424.6279 & 0 & 5000 & 18259\\
+Farmer & 94 & 46.3617 & 0 & 2500 & 4358\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsubsection{2018}\label{section-4}
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{lrrrrr}
+\hiderowcolors
+\toprule
+Role1 & n & average & minimum & maximum & sum\\
+\midrule
+\showrowcolors
+ & 1 & 0.0000 & 0 & 0 & 0\\
+Decision maker & 45 & 1529.6444 & 0 & 12000 & 68834\\
+Farmer & 93 & 180.4839 & 0 & 2500 & 16785\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsubsection{2019}\label{section-5}
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{lrrrrr}
+\hiderowcolors
+\toprule
+Role1 & n & average & minimum & maximum & sum\\
+\midrule
+\showrowcolors
+ & 1 & 0.0000 & 0 & 0 & 0\\
+Decision maker & 43 & 3865.6744 & 0 & 20000 & 166224\\
+Farmer & 80 & 300.0125 & 0 & 3500 & 24001\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 5}\label{question-5}
+
+Total Xtend soybean acres sprayed with dicamba burndown (preplant or
+pre-emergence) in
+
+\subsubsection{2017}\label{section-6}
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{lrrrrr}
+\hiderowcolors
+\toprule
+Role1 & n & average & minimum & maximum & sum\\
+\midrule
+\showrowcolors
+ & 1 & 0.0000 & 0 & 0 & 0\\
+Decision maker & 42 & 168.3095 & 0 & 5000 & 7069\\
+Farmer & 92 & 3.5000 & 0 & 200 & 322\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsubsection{2018}\label{section-7}
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{lrrrrr}
+\hiderowcolors
+\toprule
+Role1 & n & average & minimum & maximum & sum\\
+\midrule
+\showrowcolors
+ & 1 & 0.00000 & 0 & 0 & 0\\
+Decision maker & 43 & 409.81395 & 0 & 8000 & 17622\\
+Farmer & 92 & 10.05435 & 0 & 300 & 925\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsubsection{2019}\label{section-8}
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{lrrrrr}
+\hiderowcolors
+\toprule
+Role1 & n & average & minimum & maximum & sum\\
+\midrule
+\showrowcolors
+ & 1 & 0.000 & 0 & 0 & 0\\
+Decision maker & 43 & 1635.163 & 0 & 20000 & 70312\\
+Farmer & 80 & 101.475 & 0 & 1500 & 8118\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 6}\label{question-6}
+
+Total Xtend soybean acres sprayed post-emergence with dicamba burdown in
+
+\subsubsection{2017}\label{section-9}
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{lrrrrr}
+\hiderowcolors
+\toprule
+Role1 & n & average & minimum & maximum & sum\\
+\midrule
+\showrowcolors
+ & 1 & 0.00000 & 0 & 0 & 0\\
+Decision maker & 43 & 224.65116 & 0 & 2500 & 9660\\
+Farmer & 90 & 33.92222 & 0 & 2500 & 3053\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsubsection{2018}\label{section-10}
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{lrrrrr}
+\hiderowcolors
+\toprule
+Role1 & n & average & minimum & maximum & sum\\
+\midrule
+\showrowcolors
+ & 1 & 0.00000 & 0 & 0 & 0\\
+Decision maker & 44 & 702.09091 & 0 & 7500 & 30892\\
+Farmer & 90 & 83.31111 & 0 & 2500 & 7498\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsubsection{2019}\label{section-11}
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{lrrrrr}
+\hiderowcolors
+\toprule
+Role1 & n & average & minimum & maximum & sum\\
+\midrule
+\showrowcolors
+ & 1 & 0.0000 & 0 & 0 & 0\\
+Decision maker & 44 & 3825.2727 & 0 & 50000 & 168312\\
+Farmer & 80 & 196.6375 & 0 & 2500 & 15731\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 7}\label{question-7}
+
+Do you own a sprayer/spray your herbicide programs
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & OwnSpr & n\\
+\midrule
+\showrowcolors
+ & Yes & 2\\
+Decision maker &  & 2\\
+Decision maker & count & 1\\
+Decision maker & No & 18\\
+Decision maker & Yes & 28\\
+\addlinespace
+Farmer &  & 2\\
+Farmer & No & 22\\
+Farmer & Yes & 76\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 8}\label{question-8}
+
+At the start of the season, did you use an effective pre-emergence
+herbicide program with multiple effective sties of action before or at
+planting
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & UsePRE & n\\
+\midrule
+\showrowcolors
+ & No & 1\\
+ & Yes & 1\\
+Decision maker &  & 1\\
+Decision maker & If YES, which one(s)? & 23\\
+Decision maker & No & 7\\
+\addlinespace
+Decision maker & Not sure & 5\\
+Decision maker & Yes & 13\\
+Farmer &  & 1\\
+Farmer & If YES, which one(s)? & 48\\
+Farmer & No & 27\\
+\addlinespace
+Farmer & Not sure & 2\\
+Farmer & Yes & 22\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & UsePRE & n\\
+\midrule
+\showrowcolors
+ & No & 1\\
+ & Yes & 1\\
+Decision maker &  & 1\\
+Decision maker & If YES, which one(s)? & 23\\
+Decision maker & No & 7\\
+\addlinespace
+Decision maker & Not sure & 5\\
+Decision maker & Yes & 13\\
+Farmer &  & 1\\
+Farmer & If YES, which one(s)? & 48\\
+Farmer & No & 27\\
+\addlinespace
+Farmer & Not sure & 2\\
+Farmer & Yes & 22\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\section{DICAMBA APPLICATION POST-EMERGENCE IN XTEND
+SOYBEAN}\label{dicamba-application-post-emergence-in-xtend-soybean}
+
+\subsection{Question 9}\label{question-9}
+
+Which dicamba formulation did you use in Xtend soybeans
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & DicamabaFormulation & n\\
+\midrule
+\showrowcolors
+ &  & 2\\
+Decision maker &  & 17\\
+Decision maker & No & 11\\
+Decision maker & Yes, Engenia & 10\\
+Decision maker & Yes, Fexapan & 2\\
+\addlinespace
+Decision maker & Yes, XtendiMax & 9\\
+Farmer &  & 41\\
+Farmer & No & 34\\
+Farmer & Other (please specify) & 2\\
+Farmer & Yes, Engenia & 9\\
+\addlinespace
+Farmer & Yes, Fexapan & 5\\
+Farmer & Yes, XtendiMax & 9\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 11}\label{question-11}
+
+Did you include a drift reduction agent (DRA) in the tank-mix
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & DrifRed & n\\
+\midrule
+\showrowcolors
+ &  & 1\\
+ & Yes & 1\\
+Decision maker &  & 25\\
+Decision maker & No & 1\\
+Decision maker & Not sure & 1\\
+\addlinespace
+Decision maker & Yes & 22\\
+Farmer &  & 65\\
+Farmer & No & 12\\
+Farmer & Not sure & 2\\
+Farmer & Yes & 21\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 12}\label{question-12}
+
+Did you include glyphosate in the tank-mix
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & IncludeGLY & n\\
+\midrule
+\showrowcolors
+ &  & 1\\
+ & Yes & 1\\
+Decision maker &  & 26\\
+Decision maker & No & 3\\
+Decision maker & Not sure & 1\\
+\addlinespace
+Decision maker & Yes & 19\\
+Farmer &  & 64\\
+Farmer & No & 16\\
+Farmer & Yes & 20\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 13}\label{question-13}
+
+Did you include post-emergence herbicides other than glyphosate in the
+tank-mix
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & IncludePOST & n\\
+\midrule
+\showrowcolors
+ &  & 1\\
+ & No & 1\\
+Decision maker &  & 27\\
+Decision maker & No & 9\\
+Decision maker & Not sure & 2\\
+\addlinespace
+Decision maker & Yes & 11\\
+Farmer &  & 65\\
+Farmer & No & 26\\
+Farmer & Yes & 9\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 14}\label{question-14}
+
+Did you include soil-residual herbicides (Group 15) in the
+POST-emergence tank-mix
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & IncludeG15 & n\\
+\midrule
+\showrowcolors
+ &  & 1\\
+ & No & 1\\
+Decision maker &  & 25\\
+Decision maker & No & 7\\
+Decision maker & Not sure & 2\\
+\addlinespace
+Decision maker & Yes & 15\\
+Farmer &  & 62\\
+Farmer & No & 25\\
+Farmer & Not sure & 2\\
+Farmer & Yes & 11\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 15}\label{question-15}
+
+Did dicamba application in your Xtend soybeans injured neighboring
+soybean fields
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & DicambaInjuryNeigh & n\\
+\midrule
+\showrowcolors
+ &  & 2\\
+Decision maker &  & 20\\
+Decision maker & No & 23\\
+Decision maker & Not sure & 5\\
+Decision maker & Yes & 1\\
+\addlinespace
+Farmer &  & 56\\
+Farmer & No & 43\\
+Farmer & Yes & 1\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 16}\label{question-16}
+
+Has weed management in soybeans significantly improved with the adoption
+of Xtend soybean
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & ImpWeedC & n\\
+\midrule
+\showrowcolors
+ &  & 2\\
+Decision maker &  & 17\\
+Decision maker & No & 8\\
+Decision maker & Yes & 24\\
+Farmer &  & 53\\
+\addlinespace
+Farmer & No & 16\\
+Farmer & Yes & 31\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\section{NON-XTEND SOYBEAN ACRES}\label{non-xtend-soybean-acres}
+
+\subsection{Question 17}\label{question-17}
+
+Did you notice dicamba injury in your non-Xtend soybeans
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & DicambaInjuryOwn & n\\
+\midrule
+\showrowcolors
+ &  & 2\\
+Decision maker &  & 18\\
+Decision maker & No & 24\\
+Decision maker & Yes & 7\\
+Farmer &  & 50\\
+\addlinespace
+Farmer & No & 41\\
+Farmer & Yes & 9\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 18}\label{question-18}
+
+Did you file an official complaint with the Department of Agriculture
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & FileComp & n\\
+\midrule
+\showrowcolors
+ &  & 2\\
+Decision maker &  & 23\\
+Decision maker & No & 26\\
+Farmer &  & 59\\
+Farmer & No & 41\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 19 \# CHECK THIS
+ONE}\label{question-19-check-this-one}
+
+What do you believe was (were) the main cause(s) for dicamba injury on
+your non-Xtend soybean
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & CausesInj & n\\
+\midrule
+\showrowcolors
+ &  & 2\\
+Decision maker &  & 35\\
+Decision maker & a) Tank-contamination (pesticide residue remaining in sprayer) & 2\\
+Decision maker & a) Tank-contamination (pesticide residue remaining in sprayer)e) Dicamba volatilization from application in Xtend soybean (Please specify product used in Comment Box.)Xtendimax & 1\\
+Decision maker & b) Physical drift during application in corn (Please specify product used in Comment Box.) & 1\\
+\addlinespace
+Decision maker & b) Physical drift during application in corn (Please specify product used in Comment Box.)d) Dicamba volatilization from application in corn (Please specify product used in Comment Box.)Status & 1\\
+Decision maker & c) Physical drift during application in Xtend soybean (Please specify product used in Comment Box.) & 2\\
+Decision maker & c) Physical drift during application in Xtend soybean (Please specify product used in Comment Box.)e) Dicamba volatilization from application in Xtend soybean (Please specify product used in Comment Box.) & 1\\
+Decision maker & c) Physical drift during application in Xtend soybean (Please specify product used in Comment Box.)g) Temperature inversion from application in Xtend soybean (Please specify product used in Comment Box.) & 1\\
+Decision maker & d) Dicamba volatilization from application in corn (Please specify product used in Comment Box.) & 1\\
+\addlinespace
+Decision maker & e) Dicamba volatilization from application in Xtend soybean (Please specify product used in Comment Box.) & 1\\
+Decision maker & g) Temperature inversion from application in Xtend soybean (Please specify product used in Comment Box.)We had no injury but weather was right for temperature inversion & 1\\
+Decision maker & h) Other or Not sure (Please specify in Comment Box.) & 1\\
+Decision maker & NA & 1\\
+Farmer &  & 88\\
+\addlinespace
+Farmer & b) Physical drift during application in corn (Please specify product used in Comment Box.)c) Physical drift during application in Xtend soybean (Please specify product used in Comment Box.)e) Dicamba volatilization from application in Xtend soybean (Please specify product used in Comment Box.) & 1\\
+Farmer & b) Physical drift during application in corn (Please specify product used in Comment Box.)d) Dicamba volatilization from application in corn (Please specify product used in Comment Box.)f) Temperature inversion from application in corn (Please specify product used in Comment Box.) & 1\\
+Farmer & b) Physical drift during application in corn (Please specify product used in Comment Box.)d) Dicamba volatilization from application in corn (Please specify product used in Comment Box.)Status & 1\\
+Farmer & c) Physical drift during application in Xtend soybean (Please specify product used in Comment Box.) & 1\\
+Farmer & c) Physical drift during application in Xtend soybean (Please specify product used in Comment Box.)d) Dicamba volatilization from application in corn (Please specify product used in Comment Box.)Sterling Blue,Status damaged beans in the area due to  drift and volatilization & 1\\
+\addlinespace
+Farmer & d) Dicamba volatilization from application in corn (Please specify product used in Comment Box.)e) Dicamba volatilization from application in Xtend soybean (Please specify product used in Comment Box.) & 1\\
+Farmer & d) Dicamba volatilization from application in corn (Please specify product used in Comment Box.)e) Dicamba volatilization from application in Xtend soybean (Please specify product used in Comment Box.)f) Temperature inversion from application in corn (Please specify product used in Comment Box.)g) Temperature inversion from application in Xtend soybean (Please specify product used in Comment Box.) & 1\\
+Farmer & d) Dicamba volatilization from application in corn (Please specify product used in Comment Box.)Status in one of my corn fields; not sure what product the neighbor used that affected the other field. & 1\\
+Farmer & d) Dicamba volatilization from application in corn (Please specify product used in Comment Box.)Sterling BLue & 1\\
+Farmer & h) Other or Not sure (Please specify in Comment Box.) & 2\\
+Farmer & h) Other or Not sure (Please specify in Comment Box.)no dicamba used...N/A & 1\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 20}\label{question-20}
+
+Do you expect yield reduction in your dicamba injured soybean
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & YieldRedSoyInjury & n\\
+\midrule
+\showrowcolors
+ &  & 2\\
+Decision maker &  & 28\\
+Decision maker & If yes, what percent yield reduction? & 3\\
+Decision maker & No & 18\\
+Farmer &  & 70\\
+\addlinespace
+Farmer & If yes, what percent yield reduction? & 4\\
+Farmer & No & 22\\
+Farmer & Yes & 4\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsection{Question 21}\label{question-21}
+
+Do you think the technology should be available to producers next
+growing season
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & KeepXtend & n\\
+\midrule
+\showrowcolors
+ &  & 2\\
+Decision maker &  & 9\\
+Decision maker & No & 3\\
+Decision maker & Yes & 37\\
+Farmer &  & 19\\
+\addlinespace
+Farmer & No & 10\\
+Farmer & Yes & 71\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+\subsection{Question 22}\label{question-22}
+
+Any thoughts you would like to share regarding Xtend soybean
+
+\begin{table}[H]
+\centering\rowcolors{2}{gray!6}{white}
+
+\begin{tabular}{llr}
+\hiderowcolors
+\toprule
+Role1 & Comments & n\\
+\midrule
+\showrowcolors
+ &  & 2\\
+Decision maker &  & 26\\
+Decision maker & Buffers should be wider and more strictly enforced & 1\\
+Decision maker & Dicamba has been used in corn and small grains for decades.  It is highly effective on many hard to control broadleaf weeds.  Issues with dicamba use in corn have become minimal over the years.  Do NOT get rid of dicamba!  We will quickly see weed resistance to other herbicides develop, if dicamba is no longer a part of the whole weed control spectrum. & 1\\
+Decision maker & Dicamba is sprayed on many more acres of corn than soybeans.  These corn acres are successfully sprayed without impact on surrounding dicamba sensitive crops. Xtend soybean technology can also be applied safely with good stewardship practices.  Xtend soybeans offer options for control of weeds that are resistant to other chemical classes. & 1\\
+\addlinespace
+Decision maker & Glyphosate resistant waterhemp populations are exploding, so we are going to need all available technologies to try and get weed control as we move forward. & 1\\
+Decision maker & I believe that we have an advantage using this technology in the northern areas vs. southern areas do to cooler temperatures and less humidity during application timing. & 1\\
+Decision maker & I feel that most of the cases where drift happened were not because of the proper product being used in true label compliance. It would be great if the some one would publish how many acres were injured by non compliance vs just dicamba in general & 1\\
+Decision maker & I think Xtend beans are just another tool, not a Cure-all.  If dicamba products are misapplied like others in the past, we  could see the weed species become  resistant to dicamba technology also.  We have had good performance with Liberty on LL Beans, without all of the drift and vaporizing issues. & 1\\
+Decision maker & If we don't have this technology available it will have a significant negative impact on soybean growers in Wisconsin. & 1\\
+\addlinespace
+Decision maker & Imp. to gauge application timing to weather event; timing is crucial & 1\\
+Decision maker & it has been very difficult to use this technology, but when used correctly we have had no issues.  i am very uncomfortable using as the liability and risks are great with its use. & 1\\
+Decision maker & Most of what I<d5>ve seen farmers are relying on it as a rescue treatment not part of a responsible weed management tool.  More residuals and better weed management needs to be a focus they are shown how to use in the future. Many wait for much taller weeds and are reluctant to use residual herbicides because of cost or potential leaf injury (fomesafen). & 1\\
+Decision maker & Much needed in 2019 & 1\\
+Decision maker & Spray early post before June 22 & 1\\
+\addlinespace
+Decision maker & The drift issues are still too potentially problematic for me to consider using. & 1\\
+Decision maker & They need to yield 1st and foremost!!!  I can kill weeds without extend. & 1\\
+Decision maker & this weed control program is too difficult too manage, therefore it cannot be a planned program.    I am better off focusing on better use of pre and post conventional herbicides for now. & 1\\
+Decision maker & Understanding and following label directions will minimize risk.  Growers and retailers need to pay attention to their adjuvant package with this technology and follow the label.  The Xtend technology is a good tool to be able to have.  Remember the number of fields, both corn and soybeans, killed when Roundup Ready crops hit the market place?  And yet, we universally accept the Roundup Ready technology. & 1\\
+Decision maker & Waterhemp is rapidly joining giant ragweed as a major problem weed in Iowa, Lafayette, and Grant counties. In some areas if a grower isn't planting Liberty Link or Xtend soybeans, then they might as well not even bother planting soybeans. My field observations this year make be think that you get better control with dicamba than with liberty. If dicamba is approved for application on soybeans next year, I will encourage all of my growers to plant Xtend soybeans. & 1\\
+\addlinespace
+Decision maker & We need this tool to have options. & 1\\
+Decision maker & We should restrict the application window. Keep it early when it works best. & 1\\
+Decision maker & Where glyphosate resistant weeds are present & 1\\
+Decision maker & With the amount of herbicide tolerant weeds we are dealing with we do need the Xtend Technology. & 1\\
+Decision maker & Xtend soybeans would greatly help with weed management on weeds that are tough to kill.  This can and should not be the only mood of action used on tough to control weeds for growers that plant soybeans.  Xtend should be used as a "insurance"  package for the fields that have out breaks of tough to control weeds after a pre or early post application is made. & 1\\
+\addlinespace
+Farmer &  & 62\\
+Farmer & All dicamba products should be restricted use. & 1\\
+Farmer & Although growers have faced some growing pains using this technology, it is essential for it to remain an option going forward to combat weeds that are resistant to multiple chemistry's. & 1\\
+Farmer & Back up plan & 1\\
+Farmer & dicamba is a high management product  that should not be used by non trained personnel.  limited availability & 1\\
+\addlinespace
+Farmer & Did a very good job of controlling many weeds and has residual & 1\\
+Farmer & Don't know the answer to no 21  ,we have had good luck with our program. The injury we received as from someone else & 1\\
+Farmer & Enlist might be better & 1\\
+Farmer & Given the large amount of acres damaged again in the US, we as a group have proven we are not capable of using this technology.  Certainly many factors contribute to the damage, but when the damage is counted in the millions of acres it is clearly not acceptable to continue its use.  It<d5>s unfortunate because having additional herbicides to choose from is a good thing. & 1\\
+Farmer & Going to try & 1\\
+\addlinespace
+Farmer & Great Product that can help with weed control & 1\\
+Farmer & I am very much thinking about going all xtend beans next year but haven't completely decided. & 1\\
+Farmer & I don't use dicamba because I raise processed vegetables and its not a risk I wish to take if I can find alternative weed control. & 1\\
+Farmer & I think this is a technology that can be very beneficial as a way to control weeds in Soybeans.  Like any spray chemicals it has to be done carefully and by the book.  After using it the last two growing seasons and not having issues with it I won't be afraid to use it in the future if it is still available.  We need to continue finding ways to combat problem weeds like Waterhemp and Palmer Amaranth and Dicamba is one product that does work on them. & 1\\
+Farmer & I would hope datcp would extend the use of this technology.     There is a lot of weeds that are tough to eradicate and this is another tool in our toolbox.  I have 260 acres of extend herbicide on my farm I did not spray because of conditions were not right (hot) and I didn<d5>t have hardly any weed pressure when we made our second pass.   But I have always used residual herbicides and rotated them to keep our programs working.     I would encourage you to keep this technology for us.    Patrick E Bird.  920-382-0579 & 1\\
+\addlinespace
+Farmer & I������m ok with a cutoff date if needed.  We need dicamba as an option to control Roundup resistant waterhemp in corn and soybeans & 1\\
+Farmer & In season usage is a concern.  Pre usage has strong value & 1\\
+Farmer & it is a dangerous product to use & 1\\
+Farmer & its the best tool we have right now to control waterhemp of which in my area has exploded this year, some farmers are not taking this issue seriously.   I have tried my best to control and have been satisfied with pre, post, and dicamba as the last pass if needed. I believe this could become a real issue to the farming community if we are not allowed dicamba use.  We have tried Cobra and Cadet with ok results but late season will over rule where as dicamba/extend seems to be working. & 1\\
+Farmer & keeping [a gauge] for temperature inversion 48 hours out & 1\\
+\addlinespace
+Farmer & Make XTEND gene to all GMO seed & 1\\
+Farmer & May need to use post dicambia spray next year  Trying to avoid yield drag varieties  Pre plant spray is only effective weed control & 1\\
+Farmer & More education on the label requirements & 1\\
+Farmer & Need this tool. Has allowed us to deal with waterhemp that had become a huge problem. Doing it right can be done when following the label. We have a fair sized acreage and it worked extremely well. Put a residual pre then in with the post and we<d5>ll have clean fields all the way till harvest. & 1\\
+Farmer & No experience & 1\\
+\addlinespace
+Farmer & Some university extension have way overblown this..  Farmers can manage this and we need this technology. & 1\\
+Farmer & Spraying Dicamba in june or early july is potentially a problem I don't want.  Too much risk of  damage to sensitive crops especially in this semi-urban area.. When Enlist beans are here I plan on using them. & 1\\
+Farmer & The technology and chemistry need to be made safer before commercialization. I will not use if there is a risk of injuring my neighbors crop. Not going to hurt them to better myself. & 1\\
+Farmer & The Xtend technology is a great tool when used correctly. To be able to use this product in a preplant through V5 soybeans will not only help the continued sustainability of growing soybeans in Wisconsin where weed resistance is a challenge, but also help to insure that weather conditions are more conducive to keeping the product where it was sprayed.  It is my opinion that the closer to June 21st we spray this product, the greater the risk to adverse weather conditions that will increase the possibilities of this product moving off site. We have proven that early applications are of minimal risk to sensitive vegetation. & 1\\
+Farmer & They are need to fix are weed proble & 1\\
+\addlinespace
+Farmer & They have to yield this year before I pay a premium for extend seed next year. I only bought extend this year as they were touting the newest genetics. & 1\\
+Farmer & To hard to prove fault.  Lots of damage were you cant say for sure who caused it. & 1\\
+Farmer & Use as last resort & 1\\
+Farmer & We don't have the extreme nigh temperatures as in south, could reduce vaporization.  Waterhemp has just shown up on my farm in the last 3 years and seems to be uncontrollable, as if the seed came along with the soybean seed and is roundup resistant to boot.  Need to find something to control it. & 1\\
+Farmer & We have dealt with dicamba injury from corn fields more than from dicamba soybeans & 1\\
+\addlinespace
+Farmer & We need a mode of action to fight the water hemp. The mode should not be as touchy as this product.  We farm where our fields are small and many neighbors. Too hard to use the product. & 1\\
+Farmer & with the growing problem with resistant weeds, we need to have options like this available. & 1\\
+Farmer & Xtendimax didn't move 1 ft in 2017. Would have sprayed in 18 but fields were clean at v3. We need this tech. & 1\\
+Farmer & You have the idiots down south who sprayed nothing but Roundup and created these resistant weeds that all the rest of us that used residual products and multiple modes of action in our weed contol programs are now going to have to pay the price to deal with. How long before these same idiots render this technology useless because they only have this herbicide to control some of these resistant weeds? Look what happened last year with the use in some cases of generic dicamba  and the disregard for the instructions on the label. & 1\\
+\bottomrule
+\end{tabular}
+\rowcolors{2}{white}{white}
+\end{table}
+
+
+\end{document}

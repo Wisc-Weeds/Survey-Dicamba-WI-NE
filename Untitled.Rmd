@@ -1,0 +1,289 @@
+---
+title: "Untitled"
+author: "Maxwel Coura Oliveira"
+date: "11/21/2018"
+output: pdf_document
+---
+
+```{r include=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+library(dplyr)
+library(scales)
+```
+
+# Demographics 
+
+```{r include=FALSE, warning=FALSE}
+Data=read.csv("2018SurveyWINE.csv")
+str(Data)
+```
+
+## Question 1 - County
+
+
+```{r echo=FALSE, warning=FALSE, include=FALSE, warning=FALSE, message=FALSE}
+a<-Data %>% 
+  filter(Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(Role1, State) %>% 
+  count(County, na.rm = TRUE) 
+kable(a, "latex", longtable = T, booktabs = T) %>%
+kable_styling(latex_options = "scale_down")
+```
+
+
+
+
+## Question 2 - Your Role
+
+
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+b<-Data %>% 
+  filter(Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State) %>% 
+  count(Role1, na.rm = TRUE) %>% 
+  add_tally() %>% 
+  mutate(Perc=(n/nn)*100) %>%  
+  select(-nn, -na.rm) %>% 
+  mutate_at(4, round, 0)
+
+#names(b) <- c("State", "Role", "Total", "Percentage")
+
+
+kable(b, "latex", caption ="Primary role of survey respondents from Nebraska and Wiscosnin", booktabs = T,
+      col.names = c("State", "Role", "#", "%"), linesep = '') %>% 
+  add_header_above(c(" ", " ", "Respondents" = 2), bold = F) %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+
+
+```{r Question2plot, echo=FALSE, fig.cap="Primary role of survey respondents from Nebraska and Wiscosnin", warning=FALSE}
+ggplot(b, aes(x="", y=Perc, fill=Role1)) + geom_col(width=1, color="black") + ylim(0,100) +
+  labs(x="", y="% Respondents") + facet_wrap(~State) + scale_fill_brewer(palette="Set3") + 
+  coord_polar(theta = "y", start = pi / 3) + 
+ geom_text(aes(label = Perc), size = 5,  hjust =-1, vjust = -1) +
+      theme(axis.text=element_blank(), strip.text = element_text(size = 16, face="bold", color="black"),
+        axis.title=element_text(size=16, face="bold"), 
+        panel.background = element_rect(fill="white", color = "black"), 
+        panel.grid.major = element_line(color = "white"), 
+  panel.grid.minor = element_blank(), legend.key.width = unit(2.2, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position="bottom", legend.text = element_text(size = 14, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_blank()) + labs(x="% of total respondents", y="Primary role")
+```
+
+
+\newpage
+
+## Question 3 - Total soybean ha planted/managed in 
+
+
+### 2017
+
+```{r Question32017, echo=FALSE, warning=FALSE}
+c<-Data %>% 
+  filter(!is.na(SoyH17), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(SoyH17, na.rm = TRUE), Total=sum(SoyH17, na.rm = TRUE)) %>% 
+  #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(c, "latex", caption = "Total soybean ha planted/managed in 2017 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+
+
+
+
+### 2018
+
+```{r Question32018, echo=FALSE, warning=FALSE}
+d<-Data %>% 
+  filter(!is.na(SoyH18), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(SoyH18, na.rm = TRUE), Total=sum(SoyH18, na.rm = TRUE)) %>% 
+   #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(d, "latex", caption = "Total soybean ha planted/managed in 2018 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+### 2019
+
+```{r Question32019, echo=FALSE, warning=FALSE}
+e<-Data %>% 
+  filter(!is.na(SoyH19), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(SoyH19), Total=sum(SoyH19)) %>% 
+  #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(e, "latex", caption = "Total expected soybean ha to be planted/managed in 2019 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+
+\newpage
+
+## Question 4 - Total Xtend soybean ha planted/managed in
+
+
+### 2017
+
+```{r Question42017, echo=FALSE, warning=FALSE}
+f<-Data %>% 
+  filter(!is.na(XtendH17), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), mean= mean(XtendH17), Total=sum(XtendH17)) %>% 
+  #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(f, "latex", caption = "Total Xtend soybean ha planted/managed in 2017 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+### 2018
+
+```{r Question42018, echo=FALSE, warning=FALSE}
+g<-Data %>% 
+  filter(!is.na(XtendH18), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(XtendH18), Total=sum(XtendH18)) %>% 
+   #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(g, "latex", caption = "Total Xtend soybean ha planted/managed in 2018 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+### 2019
+```{r Question42019, echo=FALSE, warning=FALSE}
+h<-Data %>% 
+  filter(!is.na(XtendH19), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1) %>% 
+  summarise(n = n(), average = mean(XtendH19), Total=sum(XtendH19)) %>% 
+  #add_tally(sum) %>% 
+  mutate_at(4:5, round, 0)
+
+
+
+
+kable(h, "latex", caption = "Total expected Xtend soybean ha to be planted/managed in 2019 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("State", "Role", "#", "Soybean ha", "Soybean ha"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```
+
+
+\newpage
+
+```{r PlotXtendHa, eval=FALSE, fig.height=6, fig.width=9, warning=FALSE, include=FALSE}
+td=Data %>% 
+  filter(!is.na(SoyH17), Role1 %in% c("Decision influencer", "Farmer")) %>% 
+  group_by(State, Role1, na.rm=TRUE) %>% 
+  gather("xsoy", "Perc", 11:13)
+
+
+td$xsoy<-factor(td$xsoy, levels=c("XtendH17", "XtendH18", "XtendH19"), labels=c("2017", "2018", "2019"))
+dodge <- position_dodge(width = 0.9)
+
+ggplot(td, aes(x=Role1, y=Perc, fill=Role1)) + geom_boxplot(position = dodge, outlier.size = -5, width = 0.5, aes(fill=xsoy)) + facet_wrap(~State, ncol=2) +
+     #geom_jitter(pch = 21, aes(fill=xsoy), position=position_jitter(w=0.5,h=0.5), alpha=0.5) +
+     #stat_summary(fun.y=mean, geom="point", shape=16, size=4, fill="blue") +
+      theme(axis.text=element_text(size=15, color="black"), strip.text = element_text(size = 16, face="bold", color="black"), axis.title=element_text(size=16, face="bold"), 
+        panel.background = element_rect(fill="white", color = "black"), 
+        panel.grid.major = element_line(color = "white"), 
+  panel.grid.minor = element_blank(), legend.key.width = unit(2.2, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position=c(0.9, 0.9), legend.text = element_text(size = 14, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_blank()) + labs(x="", y="Soybean ha") + ylim(0,15000) #+ scale_fill_brewer(palette="Set3")
+```
+
+\newpage
+
+```{r ModelXtendHa, echo=FALSE, fig.height=6, fig.width=9, warning=FALSE, fig.cap="Share of the total Xtend soybean ha planted/managed in 2017, 2018, and 2019 according to survey respondents from Nebraska and Wisconsin"}
+td <- Data %>% 
+  mutate(XtR17=XtendH17/SoyH17*100, XtR18=XtendH18/SoyH18*100, XtR19=XtendH19/SoyH19*100) %>% 
+  gather("xsoy", "Perc", 54:56, na.rm=TRUE) %>% 
+   filter(!is.na(xsoy), Role1 %in% c("Decision influencer", "Farmer"))
+  
+  
+
+td$xsoy<-factor(td$xsoy, levels=c("XtR17", "XtR18", "XtR19"), labels=c("2017", "2018", "2019"))
+td$xsoy<-as.factor(td$xsoy)
+
+
+
+ggplot(td, aes(x=xsoy, y=Perc, color=Role1, group=Role1)) + geom_smooth(method=lm, se=TRUE, alpha=0.2, aes(fill=Role1)) + 
+  stat_summary(fun.y = "mean", size=3, geom = "point", aes(fill=Role1, color=Role1)) +  #geom_point() +
+  facet_wrap(~State, ncol=2) + ylim(0,100) +
+        theme(axis.text=element_text(size=15, color="black"), strip.text = element_text(size = 16, face="bold", color="black"), axis.title=element_text(size=16, face="bold"), 
+        panel.background = element_rect(fill="white", color = "black"), 
+        panel.grid.major = element_line(color = "white"), 
+  panel.grid.minor = element_blank(), legend.key.width = unit(2.2, "line"), panel.border=element_rect(fill=NA, color="black", size=0.7, linetype = "solid"),
+  legend.position=c(0.85, 0.92), legend.text = element_text(size = 14, colour = "black"), legend.key = element_rect(fill=NA),
+legend.background = element_rect(fill =NA),  legend.title=element_blank()) + labs(x="", y="% Xtend soybean ha")  + scale_color_brewer(palette="Set1")
+```
+
+\newpage
+
+```{r echo=FALSE, warning=FALSE}
+zz<-td %>% 
+    group_by(Role1, State) %>% 
+    do({
+      mod = lm(Perc ~ xsoy, data = .)
+      data.frame(Intercept = coef(mod)[1],
+                 Slope = coef(mod)[2])})
+
+
+
+kable(zz, "latex", caption ="Intercept and Slope of the share of the total Xtend soybean ha planted/managed in 2017, 2018, and 2019 according to survey respondents from Nebraska and Wisconsin", booktabs = T,
+      col.names = c("Role", "State", "Intercept", "Slope"), align = "c") %>% 
+  add_header_above(c("", "", "Respondents" = 1, "Estimate"=1, "Total"=1), bold = F, align = "c") %>%
+kable_styling(latex_options = c("striped", "hold_position"), position = "center", font_size = 10, full_width = F) %>%  
+ collapse_rows(columns = 1, latex_hline = "none", valign = "middle") %>% 
+   footnote(number = c("Decision influencer: agronomist, coop, industry rep, and university rep")) 
+```

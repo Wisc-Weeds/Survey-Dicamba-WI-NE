@@ -1,0 +1,1324 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={2018 Soybean Production and Dicamba Survey},
+            pdfauthor={Maxwel Coura Oliveira and Rodrigo Werle},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{2018 Soybean Production and Dicamba Survey}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Maxwel Coura Oliveira and Rodrigo Werle}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{11/9/2018}
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+
+\begin{document}
+\maketitle
+
+\section{Demographics}\label{demographics}
+
+\subsection{Question 1 - County}\label{question-1---county}
+
+\subsection{Question 2 - Your Role}\label{question-2---your-role}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-4}Primary role of survey respondents from Nebraska and Wiscosnin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{llrr}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{2}{c}{Respondents} \\
+\cmidrule(l{2pt}r{2pt}){3-4}
+State & Role & \# & \%\\
+\midrule
+\showrowcolors
+ & Decision influencer & 72 & 23\\
+
+\multirow{-2}{*}{\raggedright\arraybackslash Nebraska} & Farmer & 244 & 77\\
+
+ & Decision influencer & 49 & 33\\
+
+\multirow{-2}{*}{\raggedright\arraybackslash Wisconsin} & Farmer & 100 & 67\\
+\bottomrule
+\multicolumn{4}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/Question2plot-1.pdf}
+\caption{Primary role of survey respondents from Nebraska and Wiscosnin}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(b)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Survey_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\newpage
+
+\subsection{Question 3 - Total soybean ha planted/managed
+in}\label{question-3---total-soybean-ha-plantedmanaged-in}
+
+\subsubsection{2017}\label{section}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question32017}Total soybean ha planted/managed in 2017 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 60 & 4690 & 281385\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 238 & 332 & 79116\\
+
+ & Decision influencer & 43 & 3586 & 154181\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 99 & 208 & 20582\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\subsubsection{2018}\label{section-1}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question32018}Total soybean ha planted/managed in 2018 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 60 & 4978 & 298656\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 239 & 341 & 81483\\
+
+ & Decision influencer & 45 & 3988 & 179481\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 99 & 225 & 22238\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\subsubsection{2019}\label{section-2}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question32019}Total expected soybean ha to be planted/managed in 2019 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 56 & 5477 & 306716\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 219 & 352 & 77032\\
+
+ & Decision influencer & 44 & 4969 & 218640\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 95 & 212 & 20187\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\newpage
+
+\subsection{Question 4 - Total Xtend soybean ha planted/managed
+in}\label{question-4---total-xtend-soybean-ha-plantedmanaged-in}
+
+\subsubsection{2017}\label{section-3}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question42017}Total Xtend soybean ha planted/managed in 2017 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 60 & 782 & 46929\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 224 & 67 & 15048\\
+
+ & Decision influencer & 43 & 172 & 7392\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 94 & 19 & 1763\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\subsubsection{2018}\label{section-4}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question42018}Total Xtend soybean ha planted/managed in 2018 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 62 & 3033 & 188048\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 232 & 188 & 43587\\
+
+ & Decision influencer & 45 & 619 & 27868\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 93 & 73 & 6790\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\subsubsection{2019}\label{section-5}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question42019}Total expected Xtend soybean ha to be planted/managed in 2019 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 57 & 4227 & 240915\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 189 & 260 & 49107\\
+
+ & Decision influencer & 43 & 1565 & 67298\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 80 & 121 & 9713\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\newpage
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/ModelXtendHa-1.pdf}
+\caption{Share of the total Xtend soybean ha planted/managed in 2017,
+2018, and 2019 according to survey respondents from Nebraska and
+Wisconsin}
+\end{figure}
+
+\newpage
+
+\subsection{Question 5 - Total Xtend soybean ha sprayed with dicamba
+burndown (preplant or pre-emergence)
+in}\label{question-5---total-xtend-soybean-ha-sprayed-with-dicamba-burndown-preplant-or-pre-emergence-in}
+
+\subsubsection{2017}\label{section-6}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question52017}Total Xtend soybean ha sprayed with dicamba burndown (preplant or pre-emergence) in 2017 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 60 & 463 & 27766\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 216 & 30 & 6440\\
+
+ & Decision influencer & 42 & 68 & 2862\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 93 & 1 & 129\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\subsubsection{2018}\label{section-7}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question52018}Total Xtend soybean ha sprayed with dicamba burndown (preplant or pre-emergence) in 2018 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 63 & 1275 & 80339\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 228 & 80 & 18254\\
+
+ & Decision influencer & 43 & 166 & 7135\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 93 & 4 & 372\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\subsubsection{2019}\label{section-8}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question52019}Total expected Xtend soybean ha to be sprayed with dicamba burndown (preplant or pre-emergence) in 2019 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 57 & 2328 & 132669\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 195 & 143 & 27807\\
+
+ & Decision influencer & 44 & 647 & 28466\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 87 & 38 & 3283\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\newpage
+
+\newpage
+
+\newpage
+
+\subsection{Question 6 - Total Xtend soybean ha sprayed post-emergence
+with dicamba
+in}\label{question-6---total-xtend-soybean-ha-sprayed-post-emergence-with-dicamba-in}
+
+\subsubsection{2017}\label{section-9}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question62017}Total Xtend soybean ha sprayed post-emergence with dicamba burdown in 2017 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 60 & 589 & 35318\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 216 & 34 & 7372\\
+
+ & Decision influencer & 43 & 91 & 3910\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 92 & 13 & 1235\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\subsubsection{2018}\label{section-10}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question62018}Total Xtend soybean ha sprayed post-emergence with dicamba burdown in 2018 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 62 & 2280 & 141370\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 229 & 110 & 25149\\
+
+ & Decision influencer & 44 & 284 & 12506\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 92 & 33 & 3035\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\subsubsection{2019}\label{section-11}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question62019}Total expected Xtend soybean ha to be sprayed post-emergence with dicamba burdown in 2018 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 56 & 3022 & 169222\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 185 & 185 & 34261\\
+
+ & Decision influencer & 44 & 1549 & 68143\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 80 & 80 & 6369\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/ModelPOSTHa-1.pdf}
+\caption{Share of the total Xtend soybean ha sprayed with dicamba POST
+in 2017, 2018, and 2019 according to survey respondents from Nebraska
+and Wisconsin}
+\end{figure}
+
+\section{work here:}\label{work-here}
+
+\newpage
+
+\subsection{Question 7 - Do you own a sprayer/spray your herbicide
+programs}\label{question-7---do-you-own-a-sprayerspray-your-herbicide-programs}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question7}Own a sprayer/spray your herbicide programs}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lllrr}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{1}{c}{} & \multicolumn{2}{c}{Respondents} \\
+\cmidrule(l{2pt}r{2pt}){4-5}
+State & Role & Answer & \# & \%\\
+\midrule
+\showrowcolors
+ &  & No & 32 & 48\\
+
+ & \multirow{-2}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 35 & 52\\
+
+ &  & No & 53 & 22\\
+
+\multirow{-4}{*}{\raggedright\arraybackslash Nebraska} & \multirow{-2}{*}{\raggedright\arraybackslash Farmer} & Yes & 189 & 78\\
+\cmidrule{1-5}
+ &  & No & 18 & 38\\
+
+ & \multirow{-2}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 29 & 62\\
+
+ &  & No & 22 & 22\\
+
+\multirow{-4}{*}{\raggedright\arraybackslash Wisconsin} & \multirow{-2}{*}{\raggedright\arraybackslash Farmer} & Yes & 76 & 78\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/Question7plot-1.pdf}
+\caption{Own a sprayer/spray your herbicide programs}
+\end{figure}
+
+\newpage
+
+\subsection{Question 8 - At the start of the season, did you use an
+effective pre-emergence herbicide program with multiple effective sites
+of action before or at
+planting?}\label{question-8---at-the-start-of-the-season-did-you-use-an-effective-pre-emergence-herbicide-program-with-multiple-effective-sites-of-action-before-or-at-planting}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question8}Use an effective pre-emergence herbicide program with multiple effective sites of action before or at planting}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lllrr}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{1}{c}{} & \multicolumn{2}{c}{Respondents} \\
+\cmidrule(l{2pt}r{2pt}){4-5}
+State & Role & Answer & \# & \%\\
+\midrule
+\showrowcolors
+ &  & No & 2 & 3\\
+
+ &  & Not sure & 2 & 3\\
+
+ & \multirow{-3}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 62 & 94\\
+
+ &  & No & 17 & 7\\
+
+ &  & Not sure & 4 & 2\\
+
+\multirow{-6}{*}{\raggedright\arraybackslash Nebraska} & \multirow{-3}{*}{\raggedright\arraybackslash Farmer} & Yes & 220 & 91\\
+\cmidrule{1-5}
+ &  & No & 7 & 15\\
+
+ &  & Not sure & 5 & 10\\
+
+ & \multirow{-3}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 36 & 75\\
+
+ &  & No & 27 & 27\\
+
+ &  & Not sure & 2 & 2\\
+
+\multirow{-6}{*}{\raggedright\arraybackslash Wisconsin} & \multirow{-3}{*}{\raggedright\arraybackslash Farmer} & Yes & 70 & 71\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/Question8plot-1.pdf}
+\caption{Use an effective pre-emergence herbicide program with multiple
+effective sites of action before or at planting}
+\end{figure}
+
+\newpage
+
+\section{DICAMBA APPLICATION POST-EMERGENCE IN XTEND
+SOYBEAN}\label{dicamba-application-post-emergence-in-xtend-soybean}
+
+\subsection{Question 9 - Which dicamba formulation did you use in Xtend
+soybeans?}\label{question-9---which-dicamba-formulation-did-you-use-in-xtend-soybeans}
+
+\begin{landscape}\rowcolors{2}{gray!6}{white}
+\begin{table}[!h]
+
+\caption{\label{tab:Question9}Dicamba formulation used in Xtend soybeans according to survey participants from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lllrrrrrrrr}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{1}{c}{Dicamba} & \multicolumn{2}{c}{Respondents} & \multicolumn{2}{c}{2017} & \multicolumn{2}{c}{2018} & \multicolumn{2}{c}{2019} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-5} \cmidrule(l{2pt}r{2pt}){6-7} \cmidrule(l{2pt}r{2pt}){8-9} \cmidrule(l{2pt}r{2pt}){10-11}
+State & Role & Formulation & \# & \% & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha\\
+\midrule
+\showrowcolors
+ &  & Engenia & 35 & 62 & 27863 & 929 & 111736 & 3604 & 154796 & 5338\\
+
+ &  & Fexapan & 5 & 9 & 607 & 152 & 2258 & 565 & 3238 & 1079\\
+
+ & \multirow{-3}{*}{\raggedright\arraybackslash Decision influencer} & XtendiMax & 16 & 29 & 15181 & 949 & 43560 & 2722 & 47997 & 3200\\
+
+ &  & Engenia & 50 & 54 & 7240 & 148 & 18841 & 377 & 20452 & 465\\
+
+ &  & Fexapan & 1 & 1 & 0 & 0 & 324 & 324 & 304 & 304\\
+
+\multirow{-6}{*}{\raggedright\arraybackslash Nebraska} & \multirow{-3}{*}{\raggedright\arraybackslash Farmer} & XtendiMax & 42 & 45 & 4634 & 122 & 13743 & 335 & 14772 & 448\\
+\cmidrule{1-11}
+ &  & Engenia & 10 & 48 & 3235 & 359 & 9292 & 1032 & 25830 & 2870\\
+
+ &  & Fexapan & 2 & 10 & 303 & 152 & 2227 & 1114 & 7288 & 3644\\
+
+ & \multirow{-3}{*}{\raggedright\arraybackslash Decision influencer} & XtendiMax & 9 & 43 & 3571 & 446 & 7885 & 876 & 15152 & 2165\\
+
+ &  & Engenia & 9 & 39 & 164 & 18 & 1260 & 140 & 1438 & 180\\
+
+ &  & Fexapan & 5 & 22 & 0 & 0 & 364 & 73 & 481 & 96\\
+
+\multirow{-6}{*}{\raggedright\arraybackslash Wisconsin} & \multirow{-3}{*}{\raggedright\arraybackslash Farmer} & XtendiMax & 9 & 39 & 1206 & 134 & 2290 & 254 & 2518 & 280\\
+\bottomrule
+\multicolumn{11}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+\rowcolors{2}{white}{white}
+\end{landscape}
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/Question9plot-1.pdf}
+\caption{Dicamba formulation used in Xtend soybeans according to survey
+participants from Nebraska and Wisconsin}
+\end{figure}
+
+\newpage
+
+\subsection{Question 11 - Did you include a drift reduction agent (DRA)
+in the
+tank-mix?}\label{question-11---did-you-include-a-drift-reduction-agent-dra-in-the-tank-mix}
+
+\begin{landscape}\rowcolors{2}{gray!6}{white}
+\begin{table}[!h]
+
+\caption{\label{tab:Question11}Addition of a drift reduction agent (DRA) in the tank-mix according to survey participants from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lllrrrrrrrr}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{1}{c}{Add drift reduction} & \multicolumn{2}{c}{Respondents} & \multicolumn{2}{c}{2017} & \multicolumn{2}{c}{2018} & \multicolumn{2}{c}{2019} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-5} \cmidrule(l{2pt}r{2pt}){6-7} \cmidrule(l{2pt}r{2pt}){8-9} \cmidrule(l{2pt}r{2pt}){10-11}
+State & Role & Answer & \# & \% & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha\\
+\midrule
+\showrowcolors
+ &  & No & 2 & 4 & 1214 & 607 & 4856 & 2428 & 8499 & 4249\\
+
+ & \multirow{-2}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 55 & 96 & 41830 & 854 & 141933 & 2839 & 179482 & 3902\\
+
+ &  & No & 12 & 13 & 1109 & 101 & 1989 & 166 & 1364 & 136\\
+
+ &  & Not sure & 4 & 4 & 127 & 32 & 559 & 140 & 944 & 315\\
+
+\multirow{-5}{*}{\raggedright\arraybackslash Nebraska} & \multirow{-3}{*}{\raggedright\arraybackslash Farmer} & Yes & 79 & 83 & 10897 & 140 & 30840 & 395 & 34744 & 496\\
+\cmidrule{1-11}
+ &  & No & 1 & 4 & 0 & 0 & 810 & 810 & 1619 & 1619\\
+
+ &  & Not sure & 1 & 4 & 0 & 0 & 0 & 0 & 0 & 0\\
+
+ & \multirow{-3}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 22 & 92 & 7190 & 360 & 20618 & 982 & 50901 & 2679\\
+
+ &  & No & 12 & 34 & 164 & 14 & 615 & 51 & 1148 & 104\\
+
+ &  & Not sure & 2 & 6 & 0 & 0 & 97 & 48 & 109 & 54\\
+
+\multirow{-6}{*}{\raggedright\arraybackslash Wisconsin} & \multirow{-3}{*}{\raggedright\arraybackslash Farmer} & Yes & 21 & 60 & 1208 & 58 & 3263 & 155 & 3825 & 191\\
+\bottomrule
+\multicolumn{11}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+\rowcolors{2}{white}{white}
+\end{landscape}
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/Question11plot-1.pdf}
+\caption{Addition of a drift reduction agent (DRA) in the tank-mix
+according to survey participants from Nebraska and Wisconsin}
+\end{figure}
+
+\newpage
+
+\subsection{Question 12 - Did you include glyphosate in the
+tank-mix?}\label{question-12---did-you-include-glyphosate-in-the-tank-mix}
+
+\begin{landscape}\rowcolors{2}{gray!6}{white}
+\begin{table}[!h]
+
+\caption{\label{tab:Question12}Addition of glyphosate in the tank-mix according to survey participants from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lllrrrrrrrr}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{1}{c}{Include glyphosate} & \multicolumn{2}{c}{Respondents} & \multicolumn{2}{c}{2017} & \multicolumn{2}{c}{2018} & \multicolumn{2}{c}{2019} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-5} \cmidrule(l{2pt}r{2pt}){6-7} \cmidrule(l{2pt}r{2pt}){8-9} \cmidrule(l{2pt}r{2pt}){10-11}
+State & Role & Answer & \# & \% & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha\\
+\midrule
+\showrowcolors
+ &  & No & 3 & 5 & 1416 & 708 & 3035 & 1518 & 3440 & 1720\\
+
+ & \multirow{-2}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 54 & 95 & 41628 & 850 & 143754 & 2875 & 184541 & 4012\\
+
+ &  & No & 19 & 19 & 292 & 16 & 3792 & 200 & 3355 & 224\\
+
+ &  & Not sure & 3 & 3 & 16 & 5 & 237 & 79 & 283 & 142\\
+
+\multirow{-5}{*}{\raggedright\arraybackslash Nebraska} & \multirow{-3}{*}{\raggedright\arraybackslash Farmer} & Yes & 78 & 78 & 11825 & 156 & 30237 & 393 & 34224 & 496\\
+\cmidrule{1-11}
+ &  & No & 3 & 13 & 567 & 189 & 2511 & 837 & 5384 & 1795\\
+
+ &  & Not sure & 1 & 4 & 0 & 0 & 0 & 0 & 0 & 0\\
+
+ & \multirow{-3}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 19 & 83 & 6542 & 385 & 18715 & 1040 & 46934 & 2933\\
+
+ &  & No & 16 & 44 & 34 & 2 & 457 & 29 & 1354 & 85\\
+
+\multirow{-5}{*}{\raggedright\arraybackslash Wisconsin} & \multirow{-2}{*}{\raggedright\arraybackslash Farmer} & Yes & 20 & 56 & 1338 & 67 & 3521 & 176 & 3728 & 207\\
+\bottomrule
+\multicolumn{11}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+\rowcolors{2}{white}{white}
+\end{landscape}
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/Question12plot-1.pdf}
+\caption{Addition of glyphosate in the tank-mix according to survey
+participants from Nebraska and Wisconsin}
+\end{figure}
+
+\newpage
+
+\subsection{Question 13 - Did you include post-emergence herbicides
+other than glyphosate in the
+tank-mix?}\label{question-13---did-you-include-post-emergence-herbicides-other-than-glyphosate-in-the-tank-mix}
+
+\begin{landscape}\rowcolors{2}{gray!6}{white}
+\begin{table}[!h]
+
+\caption{\label{tab:Question13}Addition of post-emergence herbicides other than glyphosate in the tank-mix according to survey participants from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lllrrrrrrrr}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{1}{c}{Include POST} & \multicolumn{2}{c}{Respondents} & \multicolumn{2}{c}{2017} & \multicolumn{2}{c}{2018} & \multicolumn{2}{c}{2019} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-5} \cmidrule(l{2pt}r{2pt}){6-7} \cmidrule(l{2pt}r{2pt}){8-9} \cmidrule(l{2pt}r{2pt}){10-11}
+State & Role & Answer & \# & \% & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha\\
+\midrule
+\showrowcolors
+ &  & No & 13 & 24 & 15217 & 1383 & 38365 & 3197 & 50182 & 5018\\
+
+ &  & Not sure & 1 & 2 & 405 & 405 & 3238 & 3238 & 4047 & 4047\\
+
+ & \multirow{-3}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 41 & 75 & 27423 & 703 & 105186 & 2697 & 133752 & 3615\\
+
+ &  & No & 39 & 39 & 2743 & 74 & 8564 & 220 & 7364 & 238\\
+
+ &  & Not sure & 9 & 9 & 263 & 29 & 1319 & 147 & 1295 & 216\\
+
+\multirow{-6}{*}{\raggedright\arraybackslash Nebraska} & \multirow{-3}{*}{\raggedright\arraybackslash Farmer} & Yes & 53 & 52 & 9126 & 179 & 24409 & 469 & 29203 & 584\\
+\cmidrule{1-11}
+ &  & No & 9 & 41 & 2874 & 359 & 8908 & 990 & 21620 & 2702\\
+
+ &  & Not sure & 2 & 9 & 16 & 8 & 304 & 152 & 607 & 304\\
+
+ & \multirow{-3}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 11 & 50 & 4219 & 422 & 11913 & 1191 & 30091 & 3009\\
+
+ &  & No & 26 & 74 & 228 & 9 & 1566 & 60 & 2446 & 94\\
+
+\multirow{-5}{*}{\raggedright\arraybackslash Wisconsin} & \multirow{-2}{*}{\raggedright\arraybackslash Farmer} & Yes & 9 & 26 & 1144 & 127 & 2384 & 265 & 2636 & 330\\
+\bottomrule
+\multicolumn{11}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+\rowcolors{2}{white}{white}
+\end{landscape}
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/Question13plot-1.pdf}
+\caption{Addition of post-emergence herbicides other than glyphosate in
+the tank-mix according to survey participants from Nebraska and
+Wisconsin}
+\end{figure}
+
+\newpage
+
+\subsection{Question 14 - Did you include soil-residual herbicides
+(Group 15) in the POST-emergence
+tank-mix?}\label{question-14---did-you-include-soil-residual-herbicides-group-15-in-the-post-emergence-tank-mix}
+
+\begin{landscape}\rowcolors{2}{gray!6}{white}
+\begin{table}[!h]
+
+\caption{\label{tab:Question14}Addition of soil-residual herbicides (Group 15) in the POST-emergence tank-mix according to survey participants from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lllrrrrrrrr}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{1}{c}{Include group 15} & \multicolumn{2}{c}{Respondents} & \multicolumn{2}{c}{2017} & \multicolumn{2}{c}{2018} & \multicolumn{2}{c}{2019} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-5} \cmidrule(l{2pt}r{2pt}){6-7} \cmidrule(l{2pt}r{2pt}){8-9} \cmidrule(l{2pt}r{2pt}){10-11}
+State & Role & Answer & \# & \% & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha\\
+\midrule
+\showrowcolors
+ &  & No & 8 & 16 & 4088 & 584 & 16916 & 2417 & 21085 & 3012\\
+
+ &  & Not sure & 3 & 6 & 405 & 135 & 1801 & 600 & 2064 & 688\\
+
+ & \multirow{-3}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 40 & 78 & 37580 & 989 & 120383 & 3168 & 155929 & 4455\\
+
+ &  & No & 33 & 33 & 2254 & 73 & 6496 & 203 & 5977 & 206\\
+
+ &  & Not sure & 13 & 13 & 474 & 36 & 2333 & 179 & 2298 & 230\\
+
+\multirow{-6}{*}{\raggedright\arraybackslash Nebraska} & \multirow{-3}{*}{\raggedright\arraybackslash Farmer} & Yes & 53 & 54 & 9227 & 177 & 24950 & 471 & 29000 & 630\\
+\cmidrule{1-11}
+ &  & No & 7 & 29 & 2773 & 462 & 7977 & 1140 & 12308 & 2051\\
+
+ &  & Not sure & 2 & 8 & 16 & 8 & 304 & 152 & 607 & 304\\
+
+ & \multirow{-3}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 15 & 62 & 4320 & 332 & 12961 & 926 & 39464 & 3036\\
+
+ &  & No & 25 & 66 & 229 & 9 & 1520 & 61 & 2317 & 97\\
+
+ &  & Not sure & 2 & 5 & 0 & 0 & 28 & 14 & 16 & 16\\
+
+\multirow{-6}{*}{\raggedright\arraybackslash Wisconsin} & \multirow{-3}{*}{\raggedright\arraybackslash Farmer} & Yes & 11 & 29 & 1143 & 104 & 2243 & 204 & 2425 & 242\\
+\bottomrule
+\multicolumn{11}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+\rowcolors{2}{white}{white}
+\end{landscape}
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/Question14plot-1.pdf}
+\caption{Addition of soil-residual herbicides (Group 15) in the
+POST-emergence tank-mix according to survey participants from Nebraska
+and Wisconsin}
+\end{figure}
+
+\newpage
+
+\subsection{Question 15 - Did dicamba application in your Xtend soybeans
+injured neighboring soybean
+fields?}\label{question-15---did-dicamba-application-in-your-xtend-soybeans-injured-neighboring-soybean-fields}
+
+\begin{landscape}\rowcolors{2}{gray!6}{white}
+\begin{table}[!h]
+
+\caption{\label{tab:Question15}Dicamba application in your Xtend soybeans injured neighboring soybean fields according to survey participants from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lllrrrrrrrr}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{1}{c}{Injury} & \multicolumn{2}{c}{Respondents} & \multicolumn{2}{c}{2017} & \multicolumn{2}{c}{2018} & \multicolumn{2}{c}{2019} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-5} \cmidrule(l{2pt}r{2pt}){6-7} \cmidrule(l{2pt}r{2pt}){8-9} \cmidrule(l{2pt}r{2pt}){10-11}
+State & Role & Answer & \# & \% & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha\\
+\midrule
+\showrowcolors
+ &  & No & 40 & 73 & 27949 & 755 & 98711 & 2668 & 122703 & 3609\\
+
+ &  & Not sure & 6 & 11 & 7487 & 1497 & 11938 & 2388 & 13274 & 2655\\
+
+ & \multirow{-3}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 9 & 16 & 7204 & 900 & 32517 & 3613 & 47956 & 5995\\
+
+ &  & No & 88 & 85 & 9085 & 107 & 25091 & 288 & 27744 & 360\\
+
+ &  & Not sure & 10 & 10 & 789 & 79 & 1943 & 194 & 1336 & 191\\
+
+\multirow{-6}{*}{\raggedright\arraybackslash Nebraska} & \multirow{-3}{*}{\raggedright\arraybackslash Farmer} & Yes & 5 & 5 & 2121 & 424 & 7430 & 1486 & 8822 & 1764\\
+\cmidrule{1-11}
+ &  & No & 23 & 79 & 5085 & 231 & 16930 & 736 & 48370 & 2103\\
+
+ &  & Not sure & 5 & 17 & 2024 & 506 & 4312 & 862 & 4049 & 1350\\
+
+ & \multirow{-3}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 1 & 3 & 0 & NaN & 0 & NaN & 0 & NaN\\
+
+ &  & No & 43 & 98 & 1376 & 32 & 4512 & 105 & 5819 & 142\\
+
+\multirow{-5}{*}{\raggedright\arraybackslash Wisconsin} & \multirow{-2}{*}{\raggedright\arraybackslash Farmer} & Yes & 1 & 2 & 16 & 16 & 16 & 16 & 16 & 16\\
+\bottomrule
+\multicolumn{11}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+\rowcolors{2}{white}{white}
+\end{landscape}
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/Question15plot-1.pdf}
+\caption{Dicamba application in your Xtend soybeans injured neighboring
+soybean fields according to survey participants from Nebraska and
+Wisconsin}
+\end{figure}
+
+\newpage
+
+\subsection{Question 16 - Has weed management in soybeans significantly
+improved with the adoption of Xtend
+soybean?}\label{question-16---has-weed-management-in-soybeans-significantly-improved-with-the-adoption-of-xtend-soybean}
+
+\begin{landscape}\rowcolors{2}{gray!6}{white}
+\begin{table}[!h]
+
+\caption{\label{tab:Question16}Weed management in soybeans significantly improved with the adoption of Xtend soybean according to survey participants from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lllrrrrrrrr}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{1}{c}{Improve weed control} & \multicolumn{2}{c}{Respondents} & \multicolumn{2}{c}{2017} & \multicolumn{2}{c}{2018} & \multicolumn{2}{c}{2019} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-5} \cmidrule(l{2pt}r{2pt}){6-7} \cmidrule(l{2pt}r{2pt}){8-9} \cmidrule(l{2pt}r{2pt}){10-11}
+State & Role & Answer & \# & \% & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha\\
+\midrule
+\showrowcolors
+ &  & No & 4 & 7 & 1012 & 253 & 6677 & 1669 & 15378 & 3845\\
+
+ & \multirow{-2}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 52 & 93 & 42235 & 880 & 138574 & 2887 & 172602 & 3836\\
+
+ &  & No & 18 & 17 & 338 & 19 & 2483 & 138 & 1461 & 86\\
+
+\multirow{-4}{*}{\raggedright\arraybackslash Nebraska} & \multirow{-2}{*}{\raggedright\arraybackslash Farmer} & Yes & 89 & 83 & 11414 & 133 & 31845 & 362 & 37048 & 469\\
+\cmidrule{1-11}
+ &  & No & 8 & 25 & 283 & 40 & 1174 & 147 & 4291 & 613\\
+
+ & \multirow{-2}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 24 & 75 & 7109 & 323 & 20302 & 883 & 50882 & 2313\\
+
+ &  & No & 16 & 34 & 16 & 1 & 153 & 10 & 404 & 25\\
+
+\multirow{-4}{*}{\raggedright\arraybackslash Wisconsin} & \multirow{-2}{*}{\raggedright\arraybackslash Farmer} & Yes & 31 & 66 & 1376 & 44 & 4388 & 142 & 5350 & 184\\
+\bottomrule
+\multicolumn{11}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+\rowcolors{2}{white}{white}
+\end{landscape}
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/Question16plot-1.pdf}
+\caption{Weed management in soybeans significantly improved with the
+adoption of Xtend soybean according to survey participants from Nebraska
+and Wisconsin}
+\end{figure}
+
+\newpage
+
+\section{NON-XTEND SOYBEAN ACRES}\label{non-xtend-soybean-acres}
+
+\subsection{Question 17 - Did you notice dicamba injury in your
+non-Xtend
+soybeans?}\label{question-17---did-you-notice-dicamba-injury-in-your-non-xtend-soybeans}
+
+\begin{landscape}\rowcolors{2}{gray!6}{white}
+\begin{table}[!h]
+
+\caption{\label{tab:Question17}Dicamba injury in your non-Xtend soybeans according to survey participants from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lllrrrrrrrr}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{1}{c}{Injury} & \multicolumn{2}{c}{Respondents} & \multicolumn{2}{c}{2017} & \multicolumn{2}{c}{2018} & \multicolumn{2}{c}{2019} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-5} \cmidrule(l{2pt}r{2pt}){6-7} \cmidrule(l{2pt}r{2pt}){8-9} \cmidrule(l{2pt}r{2pt}){10-11}
+State & Role & Answer & \# & \% & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha\\
+\midrule
+\showrowcolors
+ &  & No & 27 & 53 & 17119 & 658 & 72541 & 2790 & 85552 & 3422\\
+
+ & \multirow{-2}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 24 & 47 & 24140 & 1150 & 52347 & 2379 & 75799 & 3445\\
+
+ &  & No & 73 & 51 & 4658 & 71 & 17987 & 261 & 20325 & 344\\
+
+\multirow{-4}{*}{\raggedright\arraybackslash Nebraska} & \multirow{-2}{*}{\raggedright\arraybackslash Farmer} & Yes & 70 & 49 & 872 & 13 & 6202 & 93 & 7762 & 149\\
+\cmidrule{1-11}
+ &  & No & 24 & 77 & 4157 & 198 & 12382 & 563 & 33675 & 1604\\
+
+ & \multirow{-2}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 7 & 23 & 2769 & 462 & 7754 & 1108 & 18887 & 3148\\
+
+ &  & No & 41 & 82 & 1329 & 34 & 3690 & 97 & 5747 & 169\\
+
+\multirow{-4}{*}{\raggedright\arraybackslash Wisconsin} & \multirow{-2}{*}{\raggedright\arraybackslash Farmer} & Yes & 9 & 18 & 65 & 7 & 586 & 65 & 647 & 108\\
+\bottomrule
+\multicolumn{11}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+\rowcolors{2}{white}{white}
+\end{landscape}
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/Question17plot-1.pdf}
+\caption{Dicamba injury in your non-Xtend soybeans according to survey
+participants from Nebraska and Wisconsin}
+\end{figure}
+
+\newpage
+
+\subsection{Question 18- Did you file an official complaint with the
+Department of
+Agriculture?}\label{question-18--did-you-file-an-official-complaint-with-the-department-of-agriculture}
+
+\begin{landscape}\rowcolors{2}{gray!6}{white}
+\begin{table}[!h]
+
+\caption{\label{tab:Question18}File an official complaint with the Department of Agriculture according to survey participants from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lllrrrrrrrr}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{1}{c}{File official complaint} & \multicolumn{2}{c}{Respondents} & \multicolumn{2}{c}{2017} & \multicolumn{2}{c}{2018} & \multicolumn{2}{c}{2019} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-5} \cmidrule(l{2pt}r{2pt}){6-7} \cmidrule(l{2pt}r{2pt}){8-9} \cmidrule(l{2pt}r{2pt}){10-11}
+State & Role & Answer & \# & \% & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha & T Xtend ha & A Xtend ha\\
+\midrule
+\showrowcolors
+ &  & No & 44 & 94 & 37171 & 907 & 114508 & 2793 & 141158 & 3443\\
+
+ & \multirow{-2}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 3 & 6 & 202 & 101 & 2570 & 857 & 9308 & 4654\\
+
+ &  & No & 119 & 97 & 4603 & 43 & 21586 & 191 & 25456 & 277\\
+
+\multirow{-4}{*}{\raggedright\arraybackslash Nebraska} & \multirow{-2}{*}{\raggedright\arraybackslash Farmer} & Yes & 4 & 3 & 0 & 0 & 316 & 79 & 0 & 0\\
+\cmidrule{1-11}
+ & Decision influencer &  & 26 & 100 & 6635 & 302 & 18102 & 754 & 45467 & 2067\\
+
+\multirow{-2}{*}{\raggedright\arraybackslash Wisconsin} & Farmer & \multirow{-2}{*}{\raggedright\arraybackslash No} & 41 & 100 & 1394 & 35 & 3430 & 88 & 4506 & 141\\
+\bottomrule
+\multicolumn{11}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+\rowcolors{2}{white}{white}
+\end{landscape}
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/Question18plot-1.pdf}
+\caption{File an official complaint with the Department of Agriculture
+according to survey participants from Nebraska and Wisconsin}
+\end{figure}
+
+\newpage
+
+\subsection{Question 19 - What do you believe was (were) the main
+cause(s) for dicamba injury on your non-Xtend
+soybean?}\label{question-19---what-do-you-believe-was-were-the-main-causes-for-dicamba-injury-on-your-non-xtend-soybean}
+
+Need to work on this Table
+
+\newpage
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/Question19plot-1.pdf}
+\caption{Main cause(s) for dicamba injury on your non-Xtend soybean
+according to survey participants from Nebraska and Wisconsin}
+\end{figure}
+
+\newpage
+
+\subsection{Question 20 - Do you expect yield reduction in your dicamba
+injured
+soybean?}\label{question-20---do-you-expect-yield-reduction-in-your-dicamba-injured-soybean}
+
+\begin{landscape}\rowcolors{2}{gray!6}{white}
+\begin{table}[!h]
+
+\caption{\label{tab:Question20}Expect yield reduction in your dicamba injured soybean according to survey participants from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lllrrrrrrrr}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{1}{c}{Expected yield reduction} & \multicolumn{2}{c}{Respondents} & \multicolumn{2}{c}{2017} & \multicolumn{2}{c}{2018} & \multicolumn{2}{c}{2019} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-5} \cmidrule(l{2pt}r{2pt}){6-7} \cmidrule(l{2pt}r{2pt}){8-9} \cmidrule(l{2pt}r{2pt}){10-11}
+State & Role & Answer & \# & \% & Xtend ha & Xtend ha & Xtend ha & Xtend ha & Xtend ha & Xtend ha\\
+\midrule
+\showrowcolors
+ &  & No & 32 & 80 & 34136 & 1177 & 97592 & 3365 & 116148 & 3872\\
+
+ & \multirow{-2}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 8 & 20 & 2185 & 312 & 10664 & 1333 & 20437 & 2920\\
+
+ &  & No & 49 & 57 & 3869 & 84 & 14268 & 304 & 17648 & 441\\
+
+\multirow{-4}{*}{\raggedright\arraybackslash Nebraska} & \multirow{-2}{*}{\raggedright\arraybackslash Farmer} & Yes & 37 & 43 & 500 & 15 & 2906 & 83 & 2918 & 97\\
+\cmidrule{1-11}
+ &  & No & 18 & 86 & 3963 & 264 & 12798 & 800 & 40304 & 2519\\
+
+ & \multirow{-2}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 3 & 14 & 2024 & 1012 & 4211 & 1404 & 4110 & 2055\\
+
+ &  & No & 22 & 73 & 295 & 14 & 2510 & 120 & 3150 & 175\\
+
+\multirow{-4}{*}{\raggedright\arraybackslash Wisconsin} & \multirow{-2}{*}{\raggedright\arraybackslash Farmer} & Yes & 8 & 27 & 16 & 2 & 64 & 8 & 16 & 3\\
+\bottomrule
+\multicolumn{11}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+\rowcolors{2}{white}{white}
+\end{landscape}
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/Question20plot-1.pdf}
+\caption{Expect yield reduction in your dicamba injured soybean
+according to survey participants from Nebraska and Wisconsin}
+\end{figure}
+
+\newpage
+
+\subsection{Question 21 - Do you think the technology should be
+available to producers next growing
+season}\label{question-21---do-you-think-the-technology-should-be-available-to-producers-next-growing-season}
+
+\begin{landscape}\rowcolors{2}{gray!6}{white}
+\begin{table}[!h]
+
+\caption{\label{tab:Question21}The Xtend technology should be available to producers next growing season according to survey participants from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lllrrrrrrrr}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{1}{c}{Keep Xtend} & \multicolumn{2}{c}{Respondents} & \multicolumn{2}{c}{2017} & \multicolumn{2}{c}{2018} & \multicolumn{2}{c}{2019} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-5} \cmidrule(l{2pt}r{2pt}){6-7} \cmidrule(l{2pt}r{2pt}){8-9} \cmidrule(l{2pt}r{2pt}){10-11}
+State & Role & Answer & \# & \% & Xtend ha & Xtend ha & Xtend ha & Xtend ha & Xtend ha & Xtend ha\\
+\midrule
+\showrowcolors
+ &  & No & 6 & 10 & 1174 & 235 & 3865 & 644 & 11534 & 2307\\
+
+ & \multirow{-2}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 57 & 90 & 42517 & 868 & 138877 & 2778 & 174504 & 3794\\
+
+ &  & No & 33 & 16 & 439 & 15 & 1846 & 60 & 648 & 23\\
+
+\multirow{-4}{*}{\raggedright\arraybackslash Nebraska} & \multirow{-2}{*}{\raggedright\arraybackslash Farmer} & Yes & 171 & 84 & 12659 & 80 & 38361 & 235 & 45252 & 328\\
+\cmidrule{1-11}
+ &  & No & 3 & 8 & 0 & 0 & 162 & 54 & 0 & 0\\
+
+ & \multirow{-2}{*}{\raggedright\arraybackslash Decision influencer} & Yes & 37 & 92 & 7392 & 224 & 22209 & 653 & 57925 & 1755\\
+
+ &  & No & 10 & 12 & 0 & 0 & 40 & 4 & 0 & 0\\
+
+\multirow{-4}{*}{\raggedright\arraybackslash Wisconsin} & \multirow{-2}{*}{\raggedright\arraybackslash Farmer} & Yes & 71 & 88 & 1493 & 22 & 6087 & 92 & 9022 & 158\\
+\bottomrule
+\multicolumn{11}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+\rowcolors{2}{white}{white}
+\end{landscape}
+
+\begin{figure}
+\centering
+\includegraphics{Survey_files/figure-latex/Question21plot-1.pdf}
+\caption{The Xtend technology should be available to producers next
+growing season according to survey participants from Nebraska and
+Wisconsin}
+\end{figure}
+
+\newpage
+
+\subsection{Question 22}\label{question-22}
+
+Any thoughts you would like to share regarding Xtend soybean
+
+
+\end{document}

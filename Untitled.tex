@@ -1,0 +1,386 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Untitled},
+            pdfauthor={Maxwel Coura Oliveira},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Untitled}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Maxwel Coura Oliveira}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{11/21/2018}
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+
+\begin{document}
+\maketitle
+
+\section{Demographics}\label{demographics}
+
+\subsection{Question 1 - County}\label{question-1---county}
+
+\subsection{Question 2 - Your Role}\label{question-2---your-role}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-4}Primary role of survey respondents from Nebraska and Wiscosnin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{llrr}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{2}{c}{Respondents} \\
+\cmidrule(l{2pt}r{2pt}){3-4}
+State & Role & \# & \%\\
+\midrule
+\showrowcolors
+ & Decision influencer & 72 & 23\\
+
+\multirow{-2}{*}{\raggedright\arraybackslash Nebraska} & Farmer & 244 & 77\\
+
+ & Decision influencer & 49 & 33\\
+
+\multirow{-2}{*}{\raggedright\arraybackslash Wisconsin} & Farmer & 100 & 67\\
+\bottomrule
+\multicolumn{4}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\begin{figure}
+\centering
+\includegraphics{Untitled_files/figure-latex/Question2plot-1.pdf}
+\caption{Primary role of survey respondents from Nebraska and Wiscosnin}
+\end{figure}
+
+\newpage
+
+\subsection{Question 3 - Total soybean ha planted/managed
+in}\label{question-3---total-soybean-ha-plantedmanaged-in}
+
+\subsubsection{2017}\label{section}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question32017}Total soybean ha planted/managed in 2017 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 60 & 4690 & 281385\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 238 & 332 & 79116\\
+
+ & Decision influencer & 43 & 3586 & 154181\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 99 & 208 & 20582\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\subsubsection{2018}\label{section-1}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question32018}Total soybean ha planted/managed in 2018 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 60 & 4978 & 298656\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 239 & 341 & 81483\\
+
+ & Decision influencer & 45 & 3988 & 179481\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 99 & 225 & 22238\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\subsubsection{2019}\label{section-2}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question32019}Total expected soybean ha to be planted/managed in 2019 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 56 & 5477 & 306716\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 219 & 352 & 77032\\
+
+ & Decision influencer & 44 & 4969 & 218640\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 95 & 212 & 20187\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\newpage
+
+\subsection{Question 4 - Total Xtend soybean ha planted/managed
+in}\label{question-4---total-xtend-soybean-ha-plantedmanaged-in}
+
+\subsubsection{2017}\label{section-3}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question42017}Total Xtend soybean ha planted/managed in 2017 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 60 & 782 & 46929\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 224 & 67 & 15048\\
+
+ & Decision influencer & 43 & 172 & 7392\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 94 & 19 & 1763\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\subsubsection{2018}\label{section-4}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question42018}Total Xtend soybean ha planted/managed in 2018 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 62 & 3033 & 188048\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 232 & 188 & 43587\\
+
+ & Decision influencer & 45 & 619 & 27868\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 93 & 73 & 6790\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\subsubsection{2019}\label{section-5}
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:Question42019}Total expected Xtend soybean ha to be planted/managed in 2019 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ccccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+State & Role & \# & Soybean ha & Soybean ha\\
+\midrule
+\showrowcolors
+ & Decision influencer & 57 & 4227 & 240915\\
+
+\multirow{-2}{*}{\centering\arraybackslash Nebraska} & Farmer & 189 & 260 & 49107\\
+
+ & Decision influencer & 43 & 1565 & 67298\\
+
+\multirow{-2}{*}{\centering\arraybackslash Wisconsin} & Farmer & 80 & 121 & 9713\\
+\bottomrule
+\multicolumn{5}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+\newpage
+
+\newpage
+
+\begin{figure}
+\centering
+\includegraphics{Untitled_files/figure-latex/ModelXtendHa-1.pdf}
+\caption{Share of the total Xtend soybean ha planted/managed in 2017,
+2018, and 2019 according to survey respondents from Nebraska and
+Wisconsin}
+\end{figure}
+
+\newpage
+
+\rowcolors{2}{gray!6}{white}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-5}Intercept and Slope of the share of the total Xtend soybean ha planted/managed in 2017, 2018, and 2019 according to survey respondents from Nebraska and Wisconsin}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{cccc}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Respondents} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Total} \\
+\cmidrule(l{2pt}r{2pt}){3-3} \cmidrule(l{2pt}r{2pt}){4-4} \cmidrule(l{2pt}r{2pt}){5-5}
+Role & State & Intercept & Slope\\
+\midrule
+\showrowcolors
+ & Nebraska & 21.441122 & 219.44872\\
+
+\multirow{-2}{*}{\centering\arraybackslash Decision influencer} & Wisconsin & 6.580529 & 14.52576\\
+
+ & Nebraska & 16.196427 & 41.45848\\
+
+\multirow{-2}{*}{\centering\arraybackslash Farmer} & Wisconsin & 8.559254 & 29.34373\\
+\bottomrule
+\multicolumn{4}{l}{\textsuperscript{1} Decision influencer: agronomist, coop, industry rep, and university rep}\\
+\end{tabular}
+\end{table}
+
+\rowcolors{2}{white}{white}
+
+
+\end{document}
